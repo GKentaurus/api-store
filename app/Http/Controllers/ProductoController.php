@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
+use App\Models\Producto;
 
 class ProductoController extends ApiController
 {
@@ -14,7 +15,7 @@ class ProductoController extends ApiController
    */
   public function index()
   {
-    //
+    return $this->showAll(Producto::all());
   }
 
   /**
@@ -35,7 +36,9 @@ class ProductoController extends ApiController
    */
   public function store(Request $request)
   {
-    //
+    $rules = [];
+
+    $this->validate($request, $rules);
   }
 
   /**
@@ -46,7 +49,7 @@ class ProductoController extends ApiController
    */
   public function show($id)
   {
-    //
+    return $this->showOne(Producto::findOrFail($id));
   }
 
   /**

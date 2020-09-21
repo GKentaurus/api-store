@@ -15,9 +15,7 @@ class UsuarioController extends ApiController
    */
   public function index()
   {
-    // $user = User::has('tipoDoc')->get();
-    // return $user;
-    return $this->showAll($user);
+    return $this->showAll(User::all());
   }
 
   /**
@@ -47,7 +45,7 @@ class UsuarioController extends ApiController
       'numDoc' => 'required|numeric',
       'email' => 'required|email',
       'contrasena' => 'required',
-      'telefPpal' => 'required|numeric|min:7|max:9999999999999',
+      'telefPpal' => 'required|numeric|digits_between:1111111,9999999999999',
       'categoria' => 'required|numeric|min:1'
     ];
     $this->validate($request, $rules);

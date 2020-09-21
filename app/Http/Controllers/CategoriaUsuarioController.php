@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CategoriaUsuario;
 use Illuminate\Http\Request;
 
 class CategoriaUsuarioController extends ApiController
@@ -13,7 +14,7 @@ class CategoriaUsuarioController extends ApiController
    */
   public function index()
   {
-    //
+    return $this->showAll(CategoriaUsuario::all());
   }
 
   /**
@@ -45,7 +46,7 @@ class CategoriaUsuarioController extends ApiController
    */
   public function show($id)
   {
-    //
+    return $this->showOne(CategoriaUsuario::findOrFail($id));
   }
 
   /**

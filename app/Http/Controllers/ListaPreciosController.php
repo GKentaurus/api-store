@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ListaPrecios;
 use Illuminate\Http\Request;
 
 class ListaPreciosController extends ApiController
@@ -13,7 +14,7 @@ class ListaPreciosController extends ApiController
    */
   public function index()
   {
-    //
+    return $this->showAll(ListaPrecios::all());
   }
 
   /**
@@ -34,7 +35,15 @@ class ListaPreciosController extends ApiController
    */
   public function store(Request $request)
   {
-    //
+    $rules = [
+      'nombreLista' => 'required|min:3|max:100',
+
+    ];
+    $this->validate($request, $rules);
+
+    $form = $request->all();
+    $lista = ListaPrecios::create($form);
+    return $this->showOne($lista);
   }
 
   /**
@@ -45,7 +54,7 @@ class ListaPreciosController extends ApiController
    */
   public function show($id)
   {
-    //
+    return $this->showOne(ListaPrecios::findOrFail($id));
   }
 
   /**
