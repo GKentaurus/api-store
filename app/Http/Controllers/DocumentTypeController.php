@@ -19,16 +19,6 @@ class DocumentTypeController extends ApiController
   }
 
   /**
-   * Show the form for creating a new resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function create()
-  {
-    return 'create';
-  }
-
-  /**
    * Store a newly created resource in storage.
    *
    * @param  \Illuminate\Http\Request  $request
@@ -41,9 +31,7 @@ class DocumentTypeController extends ApiController
       'documentDescription' => 'min:3|max:100',
     ];
     $this->validate($request, $rules);
-
     $form = $request->all();
-
     $user = DocumentType::firstOrCreate($form);
 
     return $this->showOne($user, 201);
@@ -55,21 +43,9 @@ class DocumentTypeController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function show($id)
+  public function show($documentType)
   {
-    $user = DocumentType::findOrFail($id);
-    return $user;
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function edit($id)
-  {
-    return 'edit ' . $id;
+    return $this->showOne(DocumentType::findOrFail($documentType));
   }
 
   /**
@@ -79,9 +55,9 @@ class DocumentTypeController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
+  public function update(Request $request, $documentType)
   {
-    return 'update ' . $id;
+    return 'update ' . $documentType;
   }
 
   /**
@@ -90,8 +66,8 @@ class DocumentTypeController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function destroy($id)
+  public function destroy($documentType)
   {
-    return 'destroy ' . $id;
+    DocumentType::destroy($documentType);
   }
 }

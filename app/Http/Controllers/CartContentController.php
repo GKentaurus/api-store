@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PriceList;
+use App\Models\CartContent;
 use Illuminate\Http\Request;
 
-class PriceListController extends ApiController
+class CartContentController extends ApiController
 {
   /**
    * Display a listing of the resource.
    *
    * @return \Illuminate\Http\Response
    */
-  public function index()
+  public function index($cart)
   {
-    return $this->showAll(PriceList::all());
+    return $this->showAll(CartContent::all()->where('idCart', $cart));
   }
 
   /**
@@ -26,14 +26,17 @@ class PriceListController extends ApiController
   public function store(Request $request)
   {
     $rules = [
-      'listName' => 'required|min:3|max:100',
+      'idCart' => 'required',
+      'idProduct' => 'required',
+      'quantity' => 'required',
+      'price' => 'required',
     ];
 
     $this->validate($request, $rules);
     $form = $request->all();
-    $lista = PriceList::create($form);
+    $cartContent = CartContent::create($form);
 
-    return $this->showOne($lista);
+    return $this->showOne($cartContent);
   }
 
   /**
@@ -42,9 +45,9 @@ class PriceListController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function show($priceList)
+  public function show($cartContent, $cart)
   {
-    return $this->showOne(PriceList::findOrFail($priceList));
+    return $this->showOne(CartContent::findOfFail($cartContent)->where('idCart', $cart));
   }
 
   /**
@@ -54,7 +57,7 @@ class PriceListController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $priceList)
+  public function update(Request $request, $cartContent)
   {
     //
   }
@@ -65,8 +68,12 @@ class PriceListController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function destroy($priceList)
+  public function destroy($cartContent, $cart)
   {
-    //
+    if (CartContent::findOrFail($cartContent)->idCart == $cart) {
+      CartContent::destroy($cartContent);
+    } else {
+      return $this->errorResponse('El objeto requerido del carrito no corresponde al carro indicado', 401);
+    }
   }
 }

@@ -18,16 +18,6 @@ class UserCategoryController extends ApiController
   }
 
   /**
-   * Show the form for creating a new resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function create()
-  {
-    //
-  }
-
-  /**
    * Store a newly created resource in storage.
    *
    * @param  \Illuminate\Http\Request  $request
@@ -35,7 +25,17 @@ class UserCategoryController extends ApiController
    */
   public function store(Request $request)
   {
-    //
+    $rules = [
+      'categoryName' => 'required|min:3',
+      'idPriceList' => 'required',
+      'active' => 'required',
+    ];
+
+    $this->validate($request, $rules);
+    $form = $request->all();
+    $userCategory = UserCategory::create($form);
+
+    return $this->showOne($userCategory);
   }
 
   /**
@@ -44,20 +44,9 @@ class UserCategoryController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function show($id)
+  public function show($userCategory)
   {
-    return $this->showOne(UserCategory::findOrFail($id));
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function edit($id)
-  {
-    //
+    return $this->showOne(UserCategory::findOrFail($userCategory));
   }
 
   /**
@@ -67,7 +56,7 @@ class UserCategoryController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
+  public function update(Request $request, $userCategory)
   {
     //
   }
@@ -78,8 +67,8 @@ class UserCategoryController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function destroy($id)
+  public function destroy($userCategory)
   {
-    //
+    UserCategory::destroy($userCategory);
   }
 }

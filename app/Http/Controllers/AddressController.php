@@ -12,19 +12,9 @@ class AddressController extends ApiController
    *
    * @return \Illuminate\Http\Response
    */
-  public function index($usuario)
+  public function index($user)
   {
-    return $this->showAll(Address::all()->where('idUsuario', $usuario));
-  }
-
-  /**
-   * Show the form for creating a new resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function create()
-  {
-    //
+    return $this->showAll(Address::all()->where('idUser', $user));
   }
 
   /**
@@ -33,13 +23,22 @@ class AddressController extends ApiController
    * @param  \Illuminate\Http\Request  $request
    * @return \Illuminate\Http\Response
    */
-  public function store(Request $request)
+  public function store(Request $request, $user)
   {
+    $rules = [
+      'addressName' => 'required|min:3',
+      'addressLine1' => 'required|min:7',
+      'city' => 'required',
+      'state' => 'required',
+      'country' => 'required',
+    ];
+
+    $this->validate($request, $rules);
     $form = $request->all();
+    $form['idUser'] = $user;
+    $address = Address::create($form);
 
-    $address = new Address();
-
-    return $this->showOne($address, 500);
+    return $this->showOne($address);
   }
 
   /**
@@ -48,24 +47,13 @@ class AddressController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function show($usuario, $address)
+  public function show($user, $address)
   {
-    if (Address::findOrFail($address)->idUsuario == $usuario) {
+    if (Address::findOrFail($address)->idUser == $user) {
       return $this->showOne(Address::findOrFail($address));
     } else {
       return $this->errorResponse('La dirección requerida no corresponde al usuario indicado', 401);
     }
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function edit($id)
-  {
-    //
   }
 
   /**
@@ -86,8 +74,12 @@ class AddressController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function destroy($id)
+  public function destroy($address, $user)
   {
-    //
+    if (Address::findOrFail($address)->idUser == $user) {
+      Address::destroy($address);
+    } else {
+      return $this->errorResponse('La dirección requerida no corresponde al usuario indicado', 401);
+    }
   }
 }

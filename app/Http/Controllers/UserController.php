@@ -19,16 +19,6 @@ class UserController extends ApiController
   }
 
   /**
-   * Show the form for creating a new resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function create()
-  {
-    return 'create';
-  }
-
-  /**
    * Store a newly created resource in storage.
    *
    * @param  \Illuminate\Http\Request  $request
@@ -49,15 +39,12 @@ class UserController extends ApiController
     $this->validate($request, $rules);
 
     $form = $request->all();
-
     $form['password'] = bcrypt($request->contrasena);
 
     $serie = [71, 67, 59, 53, 47, 43, 41, 37, 29, 23, 19, 17, 13, 7, 3, 0];
     $documento = $request['documentNumber'];
-
     $serie = array_reverse($serie);
     $documento = array_reverse(str_split($documento));
-
     $sum = 0;
 
     for ($i = 1; $i <= count($documento); $i++) {
@@ -65,7 +52,6 @@ class UserController extends ApiController
     }
 
     $decimal = ($sum % 11);
-
     $form['verificationDigit'] = $decimal > 1 ? 11 - $decimal : $decimal;
 
     $user = User::create($form);
@@ -79,21 +65,10 @@ class UserController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function show($id)
+  public function show($user)
   {
-    $user = User::findOrFail($id);
+    $user = User::findOrFail($user);
     return $user;
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function edit($id)
-  {
-    return 'edit ' . $id;
   }
 
   /**
@@ -103,9 +78,9 @@ class UserController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
+  public function update(Request $request, $user)
   {
-    return 'update ' . $id;
+    return 'update ' . $user;
   }
 
   /**
@@ -114,8 +89,8 @@ class UserController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function destroy($id)
+  public function destroy($user)
   {
-    return 'destroy ' . $id;
+    USer::destroy($user);
   }
 }

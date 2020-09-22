@@ -19,16 +19,6 @@ class ProductController extends ApiController
   }
 
   /**
-   * Show the form for creating a new resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function create()
-  {
-    //
-  }
-
-  /**
    * Store a newly created resource in storage.
    *
    * @param  \Illuminate\Http\Request  $request
@@ -36,9 +26,19 @@ class ProductController extends ApiController
    */
   public function store(Request $request)
   {
-    $rules = [];
+    $rules = [
+      'model' => 'required|min:5',
+      'description' => 'required|min:5|max:255',
+      'barcode' => 'required|digits_between:7,15',
+      'quantity' => 'required',
+      'active' => 'required',
+    ];
 
     $this->validate($request, $rules);
+    $form = $request->all();
+    $product = Product::create($form);
+
+    return $this->showOne($product);
   }
 
   /**
@@ -47,20 +47,9 @@ class ProductController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function show($id)
+  public function show($product)
   {
-    return $this->showOne(Product::findOrFail($id));
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function edit($id)
-  {
-    //
+    return $this->showOne(Product::findOrFail($product));
   }
 
   /**
@@ -70,7 +59,7 @@ class ProductController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
+  public function update(Request $request, $product)
   {
     //
   }
@@ -81,8 +70,8 @@ class ProductController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function destroy($id)
+  public function destroy($product)
   {
-    //
+    Product::destroy($product);
   }
 }

@@ -18,16 +18,6 @@ class PriceController extends ApiController
   }
 
   /**
-   * Show the form for creating a new resource.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function create()
-  {
-    //
-  }
-
-  /**
    * Store a newly created resource in storage.
    *
    * @param  \Illuminate\Http\Request  $request
@@ -35,7 +25,18 @@ class PriceController extends ApiController
    */
   public function store(Request $request)
   {
-    //
+    $rules = [
+      'idPrice' => 'required',
+      'idProduct' => 'required',
+      'idPriceList' => 'required',
+      'price' => 'required',
+    ];
+
+    $this->validate($request, $rules);
+    $form = $request->all();
+    $price = Price::create($form);
+
+    return $this->showOne($price);
   }
 
   /**
@@ -44,20 +45,9 @@ class PriceController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function show($id)
+  public function show($price)
   {
-    return $this->showOne(Price::findOrFail($id));
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function edit($id)
-  {
-    //
+    return $this->showOne(Price::findOrFail($price));
   }
 
   /**
@@ -67,7 +57,7 @@ class PriceController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $id)
+  public function update(Request $request, $price)
   {
     //
   }
@@ -78,8 +68,8 @@ class PriceController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function destroy($id)
+  public function destroy($price)
   {
-    //
+    Price::destroy($price);
   }
 }

@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\PriceList;
+use App\Models\Cart;
 use Illuminate\Http\Request;
 
-class PriceListController extends ApiController
+class CartController extends ApiController
 {
   /**
    * Display a listing of the resource.
    *
    * @return \Illuminate\Http\Response
    */
-  public function index()
+  public function index($user)
   {
-    return $this->showAll(PriceList::all());
+    return $this->showAll(Cart::all()->where('idUser', $user));
   }
 
   /**
@@ -25,15 +25,7 @@ class PriceListController extends ApiController
    */
   public function store(Request $request)
   {
-    $rules = [
-      'listName' => 'required|min:3|max:100',
-    ];
-
-    $this->validate($request, $rules);
-    $form = $request->all();
-    $lista = PriceList::create($form);
-
-    return $this->showOne($lista);
+    //
   }
 
   /**
@@ -42,9 +34,9 @@ class PriceListController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function show($priceList)
+  public function show($cart, $user)
   {
-    return $this->showOne(PriceList::findOrFail($priceList));
+    return $this->showOne(Cart::findOfFail($cart)->where('idUser', $user));
   }
 
   /**
@@ -54,7 +46,7 @@ class PriceListController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function update(Request $request, $priceList)
+  public function update(Request $request, $cart)
   {
     //
   }
@@ -65,8 +57,12 @@ class PriceListController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function destroy($priceList)
+  public function destroy($cart, $user)
   {
-    //
+    if (Cart::findOrFail($cart)->idUser == $user) {
+      Cart::destroy($cart);
+    } else {
+      return $this->errorResponse('El carrito requerido no corresponde al usuario indicado', 401);
+    }
   }
 }

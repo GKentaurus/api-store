@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\DocumentTypeController;
 use App\Http\Controllers\PriceController;
 use App\Http\Controllers\PriceListController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserCategoryController;
 use App\Http\Controllers\UserController;
+use App\Models\CartContent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,7 +27,7 @@ use Illuminate\Support\Facades\Route;
 // });
 
 /**
- * Rutas de USUARIO
+ * Rutas de USER
  * TODO   Retirar los metodos que no se ocupen
  */
 Route::resource('/users', UserController::class, [
@@ -39,7 +41,7 @@ Route::resource('/users', UserController::class, [
 ]);
 
 /**
- * Rutas de TIPODOC
+ * Rutas de DOCUMENT TYPE
  * TODO   Retirar los metodos que no se ocupen
  * REVIEW Es necesario asignarle una ruta?
  */
@@ -54,7 +56,7 @@ Route::resource('/document-types', DocumentTypeController::class, [
 ]);
 
 /**
- * Rutas de DIRECCION
+ * Rutas de ADDRESS
  * TODO   Obtener el usuario por sesión activa al servidor
  */
 Route::get('/users/{id_user}/addresses', [AddressController::class, 'index']);
@@ -64,7 +66,7 @@ Route::put('/users/{id_user}/addresses/{id_address}', [AddressController::class,
 Route::delete('/users/{id_user}/addresses/{id_address}', [AddressController::class, 'delete']);
 
 /**
- * Rutas de CATEGORIA_USUARIO
+ * Rutas de USER CATEGORY
  * TODO   Retirar los metodos que no se ocupen
  * REVIEW Es necesario asignarle una ruta?
  */
@@ -79,7 +81,7 @@ Route::resource('/user-categories', UserCategoryController::class, [
 ]);
 
 /**
- * Rutas de LISTA_PRECIOS
+ * Rutas de PRICE LIST
  * TODO   Retirar los metodos que no se ocupen
  * REVIEW Es necesario asignarle una ruta?
  */
@@ -94,7 +96,7 @@ Route::resource('/price-lists', PriceListController::class, [
 ]);
 
 /**
- * Rutas de LISTA-PRECIOS
+ * Rutas de PRICE
  * TODO   Retirar los metodos que no se ocupen
  * REVIEW Es necesario asignarle una ruta?
  */
@@ -109,10 +111,38 @@ Route::resource('/prices', PriceController::class, [
 ]);
 
 /**
- * Rutas de PRODUCTO
+ * Rutas de PRODUCT
  * TODO   Retirar los metodos que no se ocupen
  */
 Route::resource('/products', ProductController::class, [
+  'only' => [
+    'index',
+    'show',
+    'store',
+    'update',
+    'destroy'
+  ]
+]);
+
+/**
+ * Rutas de CART CONTENT
+ * TODO   Retirar los metodos que no se ocupen
+ */
+Route::resource('/cart-content', CartContentController::class, [
+  'only' => [
+    'index',
+    'show',
+    'store',
+    'update',
+    'destroy'
+  ]
+]);
+
+/**
+ * Rutas de CART
+ * TODO   Retirar los metodos que no se ocupen
+ */
+Route::resource('/cart', CartController::class, [
   'only' => [
     'index',
     'show',
