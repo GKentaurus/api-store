@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Precios;
+use App\Models\UserCategory;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class PreciosFactory extends Factory
+class UserCategoryFactory extends Factory
 {
   /**
    * The name of the factory's corresponding model.
    *
    * @var string
    */
-  protected $model = Precios::class;
+  protected $model = UserCategory::class;
 
   /**
    * Define the model's default state.
@@ -23,9 +23,9 @@ class PreciosFactory extends Factory
   public function definition()
   {
     return [
-      'idProducto' => $this->faker->numberBetween($min = 1, $max = 50),
-      'idListaPrecios' => $this->faker->numberBetween($min = 1, $max = 5),
-      'precio' => $this->faker->numberBetween($min = 100, $max = 10000),
+      'categoryName' => $this->faker->firstName,
+      'idPriceList' => $this->faker->numberBetween($min = 1, $max = 5),
+      'active' => true
     ];
   }
 }

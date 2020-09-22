@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTipoDocTable extends Migration
+class CreateUserCategoriesTable extends Migration
 {
   /**
    * Run the migrations.
@@ -13,11 +13,12 @@ class CreateTipoDocTable extends Migration
    */
   public function up()
   {
-    if (!Schema::hasTable('tipo_doc')) {
-      Schema::create('tipo_doc', function (Blueprint $table) {
+    if (!Schema::hasTable('user_categories')) {
+      Schema::create('user_categories', function (Blueprint $table) {
         $table->id();
-        $table->string('sigla')->unique();
-        $table->string('nombreDoc');
+        $table->string('categoryName')->require();
+        $table->foreignId('idPriceList')->constrained('price_lists');
+        $table->boolean('active')->require();
         $table->timestamps();
         $table->softDeletes();
       });
@@ -31,6 +32,6 @@ class CreateTipoDocTable extends Migration
    */
   public function down()
   {
-    // Schema::dropIfExists('tipo_doc');
+    // Schema::dropIfExists('user_categories');
   }
 }

@@ -7,18 +7,16 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Producto extends Model
+class UserCategory extends Model
 {
   use HasFactory, Notifiable, SoftDeletes;
 
-  protected $table = 'productos';
+  protected $table = 'user_categories';
 
   protected $fillable = [
-    'referencia',
-    'descripcion',
-    'codigoEAN',
-    'cantidad',
-    'activo',
+    'categoryName',
+    'idPriceList',
+    'active'
   ];
 
   protected $hidden = [];

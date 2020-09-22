@@ -7,14 +7,17 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Notifications\Notifiable;
 
-class ListaPrecios extends Model
+class Price extends Model
 {
   use HasFactory, Notifiable, SoftDeletes;
 
-  protected $table = 'lista_precios';
+  protected $table = 'prices';
 
   protected $fillable = [
-    'nombreLista'
+    'idPrice',
+    'idProduct',
+    'idPriceList',
+    'price'
   ];
 
   protected $hidden = [];

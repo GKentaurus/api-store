@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\ListaPrecios;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ApiController;
+use App\Models\DocumentType;
 
-class ListaPreciosController extends ApiController
+class DocumentTypeController extends ApiController
 {
   /**
    * Display a listing of the resource.
@@ -14,7 +15,7 @@ class ListaPreciosController extends ApiController
    */
   public function index()
   {
-    return $this->showAll(ListaPrecios::all());
+    return $this->showAll(DocumentType::all());
   }
 
   /**
@@ -24,7 +25,7 @@ class ListaPreciosController extends ApiController
    */
   public function create()
   {
-    //
+    return 'create';
   }
 
   /**
@@ -36,14 +37,16 @@ class ListaPreciosController extends ApiController
   public function store(Request $request)
   {
     $rules = [
-      'nombreLista' => 'required|min:3|max:100',
-
+      'abbreviation' => 'required|min:3|max:100',
+      'documentDescription' => 'min:3|max:100',
     ];
     $this->validate($request, $rules);
 
     $form = $request->all();
-    $lista = ListaPrecios::create($form);
-    return $this->showOne($lista);
+
+    $user = DocumentType::firstOrCreate($form);
+
+    return $this->showOne($user, 201);
   }
 
   /**
@@ -54,7 +57,8 @@ class ListaPreciosController extends ApiController
    */
   public function show($id)
   {
-    return $this->showOne(ListaPrecios::findOrFail($id));
+    $user = DocumentType::findOrFail($id);
+    return $user;
   }
 
   /**
@@ -65,7 +69,7 @@ class ListaPreciosController extends ApiController
    */
   public function edit($id)
   {
-    //
+    return 'edit ' . $id;
   }
 
   /**
@@ -77,7 +81,7 @@ class ListaPreciosController extends ApiController
    */
   public function update(Request $request, $id)
   {
-    //
+    return 'update ' . $id;
   }
 
   /**
@@ -88,6 +92,6 @@ class ListaPreciosController extends ApiController
    */
   public function destroy($id)
   {
-    //
+    return 'destroy ' . $id;
   }
 }

@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Direccion;
+use App\Models\Price;
 use Illuminate\Http\Request;
 
-class DireccionController extends ApiController
+class PriceController extends ApiController
 {
   /**
    * Display a listing of the resource.
    *
    * @return \Illuminate\Http\Response
    */
-  public function index($usuario)
+  public function index()
   {
-    return $this->showAll(Direccion::all()->where('idUsuario', $usuario));
+    return $this->showAll(Price::all());
   }
 
   /**
@@ -35,11 +35,7 @@ class DireccionController extends ApiController
    */
   public function store(Request $request)
   {
-    $form = $request->all();
-
-    $address = new Direccion();
-
-    return $this->showOne($address, 500);
+    //
   }
 
   /**
@@ -48,13 +44,9 @@ class DireccionController extends ApiController
    * @param  int  $id
    * @return \Illuminate\Http\Response
    */
-  public function show($usuario, $direccion)
+  public function show($id)
   {
-    if (Direccion::findOrFail($direccion)->idUsuario == $usuario) {
-      return $this->showOne(Direccion::findOrFail($direccion));
-    } else {
-      return $this->errorResponse('La dirección requerida no corresponde al usuario indicado', 401);
-    }
+    return $this->showOne(Price::findOrFail($id));
   }
 
   /**

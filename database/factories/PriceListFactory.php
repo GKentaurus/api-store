@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\ListaPrecios;
+use App\Models\PriceList;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class ListaPreciosFactory extends Factory
+class PriceListFactory extends Factory
 {
   /**
    * The name of the factory's corresponding model.
    *
    * @var string
    */
-  protected $model = ListaPrecios::class;
+  protected $model = PriceList::class;
 
   /**
    * Define the model's default state.
@@ -23,7 +23,7 @@ class ListaPreciosFactory extends Factory
   public function definition()
   {
     return [
-      'nombreLista' => $this->faker->firstName,
+      'listName' => $this->faker->firstName,
     ];
   }
 }

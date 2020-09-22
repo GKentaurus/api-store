@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\ApiController;
-use App\Models\Producto;
 
-class ProductoController extends ApiController
+class UserController extends ApiController
 {
   /**
    * Display a listing of the resource.
@@ -15,7 +15,7 @@ class ProductoController extends ApiController
    */
   public function index()
   {
-    return $this->showAll(Producto::all());
+    return $this->showAll(User::all());
   }
 
   /**
@@ -25,7 +25,7 @@ class ProductoController extends ApiController
    */
   public function create()
   {
-    //
+    return 'create';
   }
 
   /**
@@ -36,9 +36,41 @@ class ProductoController extends ApiController
    */
   public function store(Request $request)
   {
-    $rules = [];
-
+    $rules = [
+      'firstName' => 'required|min:3|max:100',
+      'lastName' => 'required|min:3|max:100',
+      'documentType' => 'required|numeric',
+      'documentNumber' => 'required|numeric',
+      'email' => 'required|email',
+      'password' => 'required',
+      'mobileNumber' => 'required|numeric|digits_between:6,15',
+      'category' => 'required|numeric|min:1'
+    ];
     $this->validate($request, $rules);
+
+    $form = $request->all();
+
+    $form['password'] = bcrypt($request->contrasena);
+
+    $serie = [71, 67, 59, 53, 47, 43, 41, 37, 29, 23, 19, 17, 13, 7, 3, 0];
+    $documento = $request['documentNumber'];
+
+    $serie = array_reverse($serie);
+    $documento = array_reverse(str_split($documento));
+
+    $sum = 0;
+
+    for ($i = 1; $i <= count($documento); $i++) {
+      $sum = $sum + ($serie[$i] * $documento[$i - 1]);
+    }
+
+    $decimal = ($sum % 11);
+
+    $form['verificationDigit'] = $decimal > 1 ? 11 - $decimal : $decimal;
+
+    $user = User::create($form);
+
+    return $this->showOne($user, 201);
   }
 
   /**
@@ -49,7 +81,8 @@ class ProductoController extends ApiController
    */
   public function show($id)
   {
-    return $this->showOne(Producto::findOrFail($id));
+    $user = User::findOrFail($id);
+    return $user;
   }
 
   /**
@@ -60,7 +93,7 @@ class ProductoController extends ApiController
    */
   public function edit($id)
   {
-    //
+    return 'edit ' . $id;
   }
 
   /**
@@ -72,7 +105,7 @@ class ProductoController extends ApiController
    */
   public function update(Request $request, $id)
   {
-    //
+    return 'update ' . $id;
   }
 
   /**
@@ -83,6 +116,6 @@ class ProductoController extends ApiController
    */
   public function destroy($id)
   {
-    //
+    return 'destroy ' . $id;
   }
 }

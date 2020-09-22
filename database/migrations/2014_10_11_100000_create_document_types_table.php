@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateCategoriaUsuarioTable extends Migration
+class CreateDocumentTypesTable extends Migration
 {
   /**
    * Run the migrations.
@@ -13,12 +13,11 @@ class CreateCategoriaUsuarioTable extends Migration
    */
   public function up()
   {
-    if (!Schema::hasTable('categoria_usuario')) {
-      Schema::create('categoria_usuario', function (Blueprint $table) {
+    if (!Schema::hasTable('document_types')) {
+      Schema::create('document_types', function (Blueprint $table) {
         $table->id();
-        $table->string('nombreCategoria')->require();
-        $table->foreignId('idListaPrecios')->constrained('lista_precios');
-        $table->boolean('activo')->require();
+        $table->string('abbreviation')->unique();
+        $table->string('documentDescription');
         $table->timestamps();
         $table->softDeletes();
       });
@@ -32,6 +31,6 @@ class CreateCategoriaUsuarioTable extends Migration
    */
   public function down()
   {
-    // Schema::dropIfExists('categoria_clientes');
+    // Schema::dropIfExists('document_types');
   }
 }

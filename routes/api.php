@@ -1,12 +1,12 @@
 <?php
 
-use App\Http\Controllers\CategoriaUsuarioController;
-use App\Http\Controllers\DireccionController;
-use App\Http\Controllers\ListaPreciosController;
-use App\Http\Controllers\PreciosController;
-use App\Http\Controllers\ProductoController;
-use App\Http\Controllers\UsuarioController;
-use App\Http\Controllers\TipoDocController;
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\DocumentTypeController;
+use App\Http\Controllers\PriceController;
+use App\Http\Controllers\PriceListController;
+use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserCategoryController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -28,7 +28,7 @@ use Illuminate\Support\Facades\Route;
  * Rutas de USUARIO
  * TODO   Retirar los metodos que no se ocupen
  */
-Route::resource('usuario', UsuarioController::class, [
+Route::resource('/users', UserController::class, [
   'only' => [
     'index',
     'show',
@@ -43,7 +43,7 @@ Route::resource('usuario', UsuarioController::class, [
  * TODO   Retirar los metodos que no se ocupen
  * REVIEW Es necesario asignarle una ruta?
  */
-Route::resource('tipodoc', TipoDocController::class, [
+Route::resource('/document-types', DocumentTypeController::class, [
   'only' => [
     'index',
     'show',
@@ -57,18 +57,18 @@ Route::resource('tipodoc', TipoDocController::class, [
  * Rutas de DIRECCION
  * TODO   Obtener el usuario por sesión activa al servidor
  */
-Route::get('usuario/{usuario}/direccion', [DireccionController::class, 'index']);
-Route::get('usuario/{usuario}/direccion/{direccion}', [DireccionController::class, 'show']);
-Route::post('usuario/{usuario}/direccion', [DireccionController::class, 'store']);
-Route::put('usuario/{usuario}/direccion/{direccion}', [DireccionController::class, 'update']);
-Route::delete('usuario/{usuario}/direccion/{direccion}', [DireccionController::class, 'delete']);
+Route::get('/users/{id_user}/addresses', [AddressController::class, 'index']);
+Route::get('/users/{id_user}/addresses/{id_address}', [AddressController::class, 'show']);
+Route::post('/users/{id_user}/addresses', [AddressController::class, 'store']);
+Route::put('/users/{id_user}/addresses/{id_address}', [AddressController::class, 'update']);
+Route::delete('/users/{id_user}/addresses/{id_address}', [AddressController::class, 'delete']);
 
 /**
  * Rutas de CATEGORIA_USUARIO
  * TODO   Retirar los metodos que no se ocupen
  * REVIEW Es necesario asignarle una ruta?
  */
-Route::resource('categoria-usuario', CategoriaUsuarioController::class, [
+Route::resource('/user-categories', UserCategoryController::class, [
   'only' => [
     'index',
     'show',
@@ -83,7 +83,7 @@ Route::resource('categoria-usuario', CategoriaUsuarioController::class, [
  * TODO   Retirar los metodos que no se ocupen
  * REVIEW Es necesario asignarle una ruta?
  */
-Route::resource('lista-precios', ListaPreciosController::class, [
+Route::resource('/price-lists', PriceListController::class, [
   'only' => [
     'index',
     'show',
@@ -98,22 +98,7 @@ Route::resource('lista-precios', ListaPreciosController::class, [
  * TODO   Retirar los metodos que no se ocupen
  * REVIEW Es necesario asignarle una ruta?
  */
-Route::resource('lista-precios', ListaPreciosController::class, [
-  'only' => [
-    'index',
-    'show',
-    'store',
-    'update',
-    'destroy'
-  ]
-]);
-
-/**
- * Rutas de LISTA-PRECIOS
- * TODO   Retirar los metodos que no se ocupen
- * REVIEW Es necesario asignarle una ruta?
- */
-Route::resource('precios', PreciosController::class, [
+Route::resource('/prices', PriceController::class, [
   'only' => [
     'index',
     'show',
@@ -127,7 +112,7 @@ Route::resource('precios', PreciosController::class, [
  * Rutas de PRODUCTO
  * TODO   Retirar los metodos que no se ocupen
  */
-Route::resource('producto', ProductoController::class, [
+Route::resource('/products', ProductController::class, [
   'only' => [
     'index',
     'show',

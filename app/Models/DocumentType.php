@@ -8,7 +8,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class TipoDoc extends Model
+class DocumentType extends Model
 {
   use HasFactory, Notifiable, SoftDeletes;
 
@@ -17,11 +17,11 @@ class TipoDoc extends Model
    *
    * @var array
    */
-  protected $table = 'tipo_doc';
+  protected $table = 'document_types';
 
   protected $fillable = [
-    'sigla',
-    'nombreDoc',
+    'abbreviation',
+    'documentDescription',
   ];
 
   /**

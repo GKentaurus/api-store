@@ -7,24 +7,21 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class CategoriaUsuario extends Model
+class Product extends Model
 {
   use HasFactory, Notifiable, SoftDeletes;
 
-  protected $table = 'categoria_usuario';
+  protected $table = 'products';
 
   protected $fillable = [
-    'nombreCategoria',
-    'idListaPrecios',
-    'activo'
+    'model',
+    'description',
+    'barcode',
+    'quantity',
+    'active',
   ];
 
   protected $hidden = [];
 
   protected $casts = [];
-
-  // public function idListaPrecios()
-  // {
-  //   return $this->belongsTo(ListaPrecios::class, 'idListaPrecios', 'id');
-  // }
 }

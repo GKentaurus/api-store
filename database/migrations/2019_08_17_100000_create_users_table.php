@@ -15,18 +15,16 @@ class CreateUsersTable extends Migration
   {
     Schema::create('users', function (Blueprint $table) {
       $table->id();
-      $table->string('pNombre');
-      $table->string('sNombre');
-      $table->string('pApelido');
-      $table->string('sApelido');
-      $table->foreignId('tipoDoc')->constrained('tipo_doc');
-      $table->string('numDoc')->unique();
-      $table->unsignedSmallInteger('digVerif');
+      $table->string('firstName');
+      $table->string('lastName');
+      $table->foreignId('documentType')->constrained('document_types');
+      $table->string('documentNumber')->unique();
+      $table->unsignedSmallInteger('verificationDigit');
       $table->string('email')->unique();
       $table->timestamp('email_verified_at')->nullable();
-      $table->string('contrasena');
-      $table->string('telefPpal');
-      $table->foreignId('categoria')->constrained('categoria_usuario');
+      $table->string('password');
+      $table->string('mobileNumber');
+      $table->foreignId('category')->constrained('user_categories');
       $table->rememberToken();
       $table->timestamps();
       $table->softDeletes();

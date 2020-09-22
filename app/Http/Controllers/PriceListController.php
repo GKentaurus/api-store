@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\User;
+use App\Models\PriceList;
 use Illuminate\Http\Request;
-use App\Http\Controllers\ApiController;
 
-class UsuarioController extends ApiController
+class PriceListController extends ApiController
 {
   /**
    * Display a listing of the resource.
@@ -15,7 +14,7 @@ class UsuarioController extends ApiController
    */
   public function index()
   {
-    return $this->showAll(User::all());
+    return $this->showAll(PriceList::all());
   }
 
   /**
@@ -25,7 +24,7 @@ class UsuarioController extends ApiController
    */
   public function create()
   {
-    return 'create';
+    //
   }
 
   /**
@@ -37,42 +36,14 @@ class UsuarioController extends ApiController
   public function store(Request $request)
   {
     $rules = [
-      'pNombre' => 'required|min:3|max:100',
-      'sNombre' => 'min:3|max:100',
-      'pApelido' => 'required|min:3|max:100',
-      'sApelido' => 'min:3|max:100',
-      'tipoDoc' => 'required|numeric',
-      'numDoc' => 'required|numeric',
-      'email' => 'required|email',
-      'contrasena' => 'required',
-      'telefPpal' => 'required|numeric|digits_between:1111111,9999999999999',
-      'categoria' => 'required|numeric|min:1'
+      'listName' => 'required|min:3|max:100',
+
     ];
     $this->validate($request, $rules);
 
     $form = $request->all();
-
-    $form['contrasena'] = bcrypt($request->contrasena);
-
-    $serie = [71, 67, 59, 53, 47, 43, 41, 37, 29, 23, 19, 17, 13, 7, 3, 0];
-    $documento = $request['numDoc'];
-
-    $serie = array_reverse($serie);
-    $documento = array_reverse(str_split($documento));
-
-    $sum = 0;
-
-    for ($i = 1; $i <= count($documento); $i++) {
-      $sum = $sum + ($serie[$i] * $documento[$i - 1]);
-    }
-
-    $decimal = ($sum % 11);
-
-    $form['digVerif'] = $decimal > 1 ? 11 - $decimal : $decimal;
-
-    $user = User::create($form);
-
-    return $this->showOne($user, 201);
+    $lista = PriceList::create($form);
+    return $this->showOne($lista);
   }
 
   /**
@@ -83,8 +54,7 @@ class UsuarioController extends ApiController
    */
   public function show($id)
   {
-    $user = User::findOrFail($id);
-    return $user;
+    return $this->showOne(PriceList::findOrFail($id));
   }
 
   /**
@@ -95,7 +65,7 @@ class UsuarioController extends ApiController
    */
   public function edit($id)
   {
-    return 'edit ' . $id;
+    //
   }
 
   /**
@@ -107,7 +77,7 @@ class UsuarioController extends ApiController
    */
   public function update(Request $request, $id)
   {
-    return 'update ' . $id;
+    //
   }
 
   /**
@@ -118,6 +88,6 @@ class UsuarioController extends ApiController
    */
   public function destroy($id)
   {
-    return 'destroy ' . $id;
+    //
   }
 }

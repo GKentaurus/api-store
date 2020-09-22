@@ -2,11 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TipoDoc;
+use App\Models\UserCategory;
 use Illuminate\Http\Request;
-use App\Http\Controllers\ApiController;
 
-class TipoDocController extends ApiController
+class UserCategoryController extends ApiController
 {
   /**
    * Display a listing of the resource.
@@ -15,7 +14,7 @@ class TipoDocController extends ApiController
    */
   public function index()
   {
-    return $this->showAll(TipoDoc::all());
+    return $this->showAll(UserCategory::all());
   }
 
   /**
@@ -25,7 +24,7 @@ class TipoDocController extends ApiController
    */
   public function create()
   {
-    return 'create';
+    //
   }
 
   /**
@@ -36,17 +35,7 @@ class TipoDocController extends ApiController
    */
   public function store(Request $request)
   {
-    $rules = [
-      'sigla' => 'required|min:3|max:100',
-      'nombreDoc' => 'min:3|max:100',
-    ];
-    $this->validate($request, $rules);
-
-    $form = $request->all();
-
-    $user = TipoDoc::firstOrCreate($form);
-
-    return $this->showOne($user, 201);
+    //
   }
 
   /**
@@ -57,8 +46,7 @@ class TipoDocController extends ApiController
    */
   public function show($id)
   {
-    $user = TipoDoc::findOrFail($id);
-    return $user;
+    return $this->showOne(UserCategory::findOrFail($id));
   }
 
   /**
@@ -69,7 +57,7 @@ class TipoDocController extends ApiController
    */
   public function edit($id)
   {
-    return 'edit ' . $id;
+    //
   }
 
   /**
@@ -81,7 +69,7 @@ class TipoDocController extends ApiController
    */
   public function update(Request $request, $id)
   {
-    return 'update ' . $id;
+    //
   }
 
   /**
@@ -92,6 +80,6 @@ class TipoDocController extends ApiController
    */
   public function destroy($id)
   {
-    return 'destroy ' . $id;
+    //
   }
 }

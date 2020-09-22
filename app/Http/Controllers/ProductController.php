@@ -2,10 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CategoriaUsuario;
 use Illuminate\Http\Request;
+use App\Http\Controllers\ApiController;
+use App\Models\Product;
 
-class CategoriaUsuarioController extends ApiController
+class ProductController extends ApiController
 {
   /**
    * Display a listing of the resource.
@@ -14,7 +15,7 @@ class CategoriaUsuarioController extends ApiController
    */
   public function index()
   {
-    return $this->showAll(CategoriaUsuario::all());
+    return $this->showAll(Product::all());
   }
 
   /**
@@ -35,7 +36,9 @@ class CategoriaUsuarioController extends ApiController
    */
   public function store(Request $request)
   {
-    //
+    $rules = [];
+
+    $this->validate($request, $rules);
   }
 
   /**
@@ -46,7 +49,7 @@ class CategoriaUsuarioController extends ApiController
    */
   public function show($id)
   {
-    return $this->showOne(CategoriaUsuario::findOrFail($id));
+    return $this->showOne(Product::findOrFail($id));
   }
 
   /**

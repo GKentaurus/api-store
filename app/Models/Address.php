@@ -7,19 +7,19 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Direccion extends Model
+class Address extends Model
 {
   use HasFactory, Notifiable, SoftDeletes;
 
-  protected $table = 'direccion';
+  protected $table = 'addresses';
 
   protected $fillable = [
-    'nombreDireccion',
-    'dirLinea1',
-    'dirLinea2',
-    'ciudad',
-    'departamento',
-    'pais'
+    'addressName',
+    'addressLine1',
+    'addressLine2',
+    'city',
+    'state',
+    'country'
   ];
 
   protected $hidden = [];
