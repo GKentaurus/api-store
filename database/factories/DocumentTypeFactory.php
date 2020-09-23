@@ -25,8 +25,8 @@ class DocumentTypeFactory extends Factory
     $abbreviations = array('NIT', 'C.C.', 'C.E.', 'PASS');
     $documents = array('NIT', 'Cédula de Ciudadanía', 'Cédula de Extranjería', 'Pasaporte');
     return [
-      'abbreviation' => $this->faker->unique()->randomElement($array = array('NIT', 'C.C.', 'C.E.', 'PASS')), // 'b',
-      'documentDescription' => $this->faker->word,
+      'abbreviation' => $this->faker->unique()->word(), // 'b',
+      'documentDescription' => $this->faker->paragraph(1),
     ];
   }
 }

@@ -26,8 +26,8 @@ class ProductFactory extends Factory
       'model' => $this->faker->unique()->word,
       'description' => $this->faker->text($maxNbChars = 200),
       'barcode' => $this->faker->numberBetween($min = 1111111111111, $max = 9999999999999),
-      'quantity' => $this->faker->numberBetween($min = 0, $max = 100),
-      'active' => true,
+      'quantity' => $this->faker->numberBetween($min = 0, $max = 200),
+      'active' => 1,
     ];
   }
 }
