@@ -27,6 +27,7 @@ class User extends Authenticatable
     'documentNumber',
     'verificationDigit',
     'email',
+    'sendEmails',
     'password',
     'mobileNumber',
     'category'

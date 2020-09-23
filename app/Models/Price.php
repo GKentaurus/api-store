@@ -14,7 +14,6 @@ class Price extends Model
   protected $table = 'prices';
 
   protected $fillable = [
-    'idPrice',
     'idProduct',
     'idPriceList',
     'price'

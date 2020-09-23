@@ -32,6 +32,7 @@ class UserController extends ApiController
       'documentType' => 'required|numeric',
       'documentNumber' => 'required|numeric',
       'email' => 'required|email',
+      'sendEmails' => 'required',
       'password' => 'required',
       'mobileNumber' => 'required|numeric|digits_between:6,15',
       'category' => 'required|numeric|min:1'
