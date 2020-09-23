@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreatePricesTable extends Migration
 {
@@ -13,14 +14,17 @@ class CreatePricesTable extends Migration
    */
   public function up()
   {
-    Schema::create('prices', function (Blueprint $table) {
-      $table->id();
-      $table->foreignId('idProduct')->constrained('products');
-      $table->foreignId('idPriceList')->constrained('price_lists');
-      $table->string('price');
-      $table->timestamps();
-      $table->softDeletes();
-    });
+    if (!Schema::hasTable('prices') || Config::get('app.dropPrices', true)) {
+
+      Schema::create('prices', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('idProduct')->constrained('products');
+        $table->foreignId('idPriceList')->constrained('price_lists')->default(1);
+        $table->string('price');
+        $table->timestamps();
+        $table->softDeletes();
+      });
+    }
   }
 
   /**
@@ -30,6 +34,8 @@ class CreatePricesTable extends Migration
    */
   public function down()
   {
-    Schema::dropIfExists('prices');
+    if (Config::get('app.dropPrices', false)) {
+      Schema::dropIfExists('prices');
+    }
   }
 }

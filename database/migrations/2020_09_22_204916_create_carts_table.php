@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateCartsTable extends Migration
 {
@@ -13,12 +14,15 @@ class CreateCartsTable extends Migration
    */
   public function up()
   {
-    Schema::create('carts', function (Blueprint $table) {
-      $table->id();
-      $table->foreignId('idUser')->constrained('users');
-      $table->timestamps();
-      $table->softDeletes();
-    });
+    if (!Schema::hasTable('carts') || Config::get('app.dropCarts', true)) {
+
+      Schema::create('carts', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('idUser')->constrained('users');
+        $table->timestamps();
+        $table->softDeletes();
+      });
+    }
   }
 
   /**
@@ -28,6 +32,8 @@ class CreateCartsTable extends Migration
    */
   public function down()
   {
-    Schema::dropIfExists('carts');
+    if (Config::get('app.dropCarts', false)) {
+      Schema::dropIfExists('carts');
+    }
   }
 }

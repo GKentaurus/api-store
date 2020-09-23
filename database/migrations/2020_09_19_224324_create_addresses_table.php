@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateAddressesTable extends Migration
 {
@@ -13,18 +14,20 @@ class CreateAddressesTable extends Migration
    */
   public function up()
   {
-    Schema::create('addresses', function (Blueprint $table) {
-      $table->id();
-      $table->foreignId('idUser')->constrained('users');
-      $table->string('addressName')->require();
-      $table->string('addressLine1')->require();
-      $table->string('addressLine2');
-      $table->string('city')->require();
-      $table->string('state')->require();
-      $table->string('country')->require();
-      $table->timestamps();
-      $table->softDeletes();
-    });
+    if (!Schema::hasTable('addresses') || Config::get('app.dropAddresses', true)) {
+      Schema::create('addresses', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('idUser')->constrained('users');
+        $table->string('addressName')->require();
+        $table->string('addressLine1')->require();
+        $table->string('addressLine2');
+        $table->string('city')->require();
+        $table->string('state')->require();
+        $table->string('country')->require();
+        $table->timestamps();
+        $table->softDeletes();
+      });
+    }
   }
 
   /**
@@ -34,6 +37,8 @@ class CreateAddressesTable extends Migration
    */
   public function down()
   {
-    Schema::dropIfExists('addresses');
+    if (Config::get('app.dropAddresses', false)) {
+      Schema::dropIfExists('addresses');
+    }
   }
 }

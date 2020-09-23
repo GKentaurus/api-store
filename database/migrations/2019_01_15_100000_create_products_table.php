@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateProductsTable extends Migration
 {
@@ -13,16 +14,18 @@ class CreateProductsTable extends Migration
    */
   public function up()
   {
-    Schema::create('products', function (Blueprint $table) {
-      $table->id();
-      $table->string('model')->unique();
-      $table->string('description');
-      $table->string('barcode')->unique();
-      $table->integer('quantity');
-      $table->string('active');
-      $table->timestamps();
-      $table->softDeletes();
-    });
+    if (!Schema::hasTable('products') || Config::get('app.dropProducts', true)) {
+      Schema::create('products', function (Blueprint $table) {
+        $table->id();
+        $table->string('model')->unique();
+        $table->string('description');
+        $table->string('barcode')->unique();
+        $table->integer('quantity');
+        $table->tinyInteger('active');
+        $table->timestamps();
+        $table->softDeletes();
+      });
+    }
   }
 
   /**
@@ -32,6 +35,8 @@ class CreateProductsTable extends Migration
    */
   public function down()
   {
-    Schema::dropIfExists('products');
+    if (Config::get('app.dropProducts', false)) {
+      Schema::dropIfExists('products');
+    }
   }
 }

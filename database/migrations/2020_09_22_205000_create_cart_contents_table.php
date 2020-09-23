@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateCartContentsTable extends Migration
 {
@@ -13,15 +14,17 @@ class CreateCartContentsTable extends Migration
    */
   public function up()
   {
-    Schema::create('cart_contents', function (Blueprint $table) {
-      $table->id();
-      $table->foreignId('idCart')->constrained('carts')->require();
-      $table->foreignId('idProduct')->constrained('products')->require();
-      $table->integer('quantity')->require();
-      $table->double('price')->require();
-      $table->timestamps();
-      $table->softDeletes();
-    });
+    if (!Schema::hasTable('cart_contents') || Config::get('app.dropCartContents', true)) {
+      Schema::create('cart_contents', function (Blueprint $table) {
+        $table->id();
+        $table->foreignId('idCart')->constrained('carts')->require();
+        $table->foreignId('idProduct')->constrained('products')->require();
+        $table->integer('quantity')->require();
+        $table->double('price')->require();
+        $table->timestamps();
+        $table->softDeletes();
+      });
+    }
   }
 
   /**
@@ -31,6 +34,8 @@ class CreateCartContentsTable extends Migration
    */
   public function down()
   {
-    Schema::dropIfExists('cart_contents');
+    if (Config::get('app.dropCartContents', false)) {
+      Schema::dropIfExists('cart_contents');
+    }
   }
 }

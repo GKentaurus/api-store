@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreatePriceListsTable extends Migration
 {
@@ -13,12 +14,14 @@ class CreatePriceListsTable extends Migration
    */
   public function up()
   {
-    Schema::create('price_lists', function (Blueprint $table) {
-      $table->id();
-      $table->string('listNAme')->require();
-      $table->timestamps();
-      $table->softDeletes();
-    });
+    if (!Schema::hasTable('price_lists') || Config::get('app.dropPriceLists', true)) {
+      Schema::create('price_lists', function (Blueprint $table) {
+        $table->id();
+        $table->string('listName')->require()->unique();
+        $table->timestamps();
+        $table->softDeletes();
+      });
+    }
   }
 
   /**
@@ -28,6 +31,8 @@ class CreatePriceListsTable extends Migration
    */
   public function down()
   {
-    Schema::dropIfExists('price_lists');
+    if (Config::get('app.dropPriceLists', false)) {
+      Schema::dropIfExists('price_lists');
+    }
   }
 }

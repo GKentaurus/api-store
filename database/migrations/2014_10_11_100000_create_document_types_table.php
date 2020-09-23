@@ -1,8 +1,9 @@
 <?php
 
-use Illuminate\Database\Migrations\Migration;
-use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Database\Migrations\Migration;
 
 class CreateDocumentTypesTable extends Migration
 {
@@ -13,7 +14,7 @@ class CreateDocumentTypesTable extends Migration
    */
   public function up()
   {
-    if (!Schema::hasTable('document_types')) {
+    if (!Schema::hasTable('document_types') || Config::get('app.dropDocumentTypes', true)) {
       Schema::create('document_types', function (Blueprint $table) {
         $table->id();
         $table->string('abbreviation')->unique();
@@ -31,6 +32,8 @@ class CreateDocumentTypesTable extends Migration
    */
   public function down()
   {
-    // Schema::dropIfExists('document_types');
+    if (Config::get('app.dropDocumentTypes', false)) {
+      Schema::dropIfExists('document_types');
+    }
   }
 }
