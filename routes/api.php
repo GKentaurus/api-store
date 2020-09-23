@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AddressController;
+use App\Http\Controllers\CartContentController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\DocumentTypeController;
 use App\Http\Controllers\PriceController;
@@ -8,7 +9,6 @@ use App\Http\Controllers\PriceListController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\UserCategoryController;
 use App\Http\Controllers\UserController;
-use App\Models\CartContent;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -125,29 +125,21 @@ Route::resource('/products', ProductController::class, [
 ]);
 
 /**
- * Rutas de CART CONTENT
- * TODO   Retirar los metodos que no se ocupen
- */
-Route::resource('/cart-content', CartContentController::class, [
-  'only' => [
-    'index',
-    'show',
-    'store',
-    'update',
-    'destroy'
-  ]
-]);
-
-/**
  * Rutas de CART
  * TODO   Retirar los metodos que no se ocupen
  */
-Route::resource('/cart', CartController::class, [
-  'only' => [
-    'index',
-    'show',
-    'store',
-    'update',
-    'destroy'
-  ]
-]);
+Route::get('/users/{id_user}/cart', [CartController::class, 'index']);
+Route::get('/users/{id_user}/cart/{id_cart}', [CartController::class, 'show']);
+Route::post('/users/{id_user}/cart', [CartController::class, 'store']);
+Route::put('/users/{id_user}/cart/{id_cart}', [CartController::class, 'update']);
+Route::delete('/users/{id_user}/cart/{id_cart}', [CartController::class, 'delete']);
+
+/**
+ * Rutas de CART CONTENT
+ * TODO   Retirar los metodos que no se ocupen
+ */
+Route::get('/users/{id_user}/cart/{id_cart}', [CartContentController::class, 'index']);
+Route::get('/users/{id_user}/cart/{id_cart}/{id_cart_content}', [CartContentController::class, 'show']);
+Route::post('/users/{id_user}/cart/{id_cart}', [CartContentController::class, 'store']);
+Route::put('/users/{id_user}/cart/{id_cart}/{id_cart_content}', [CartContentController::class, 'update']);
+Route::delete('/users/{id_user}/cart/{id_cart}/{id_cart_content}', [CartContentController::class, 'delete']);
