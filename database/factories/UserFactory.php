@@ -25,9 +25,6 @@ class UserFactory extends Factory
     return [
       'firstName' => $this->faker->firstName,
       'lastName' => $this->faker->lastName,
-      'documentType' => $this->faker->numberBetween($min = 1, $max = 4),
-      'documentNumber' => $this->faker->numberBetween($min = 100000, $max = 999999999),
-      'verificationDigit' => $this->faker->numberBetween($min = 0, $max = 9),
       'email' => $this->faker->safeEmail,
       'password' => $this->faker->password($min = 8, $max = 20),
       'mobileNumber' => $this->faker->e164PhoneNumber,
