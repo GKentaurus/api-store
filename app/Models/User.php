@@ -24,14 +24,12 @@ class User extends Authenticatable
   protected $fillable = [
     'firstName',
     'lastName',
-    'documentType',
-    'documentNumber',
-    'verificationDigit',
     'email',
     'sendEmails',
     'password',
     'mobileNumber',
-    'category'
+    'category',
+    'isAdmin',
   ];
 
   /**

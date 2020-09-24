@@ -17,7 +17,7 @@ class CreateAddressesTable extends Migration
     if (!Schema::hasTable('addresses') || Config::get('app.dropAddresses', true)) {
       Schema::create('addresses', function (Blueprint $table) {
         $table->id();
-        $table->foreignId('idUser')->constrained('users');
+        $table->foreignId('idCompany')->constrained('companies');
         $table->string('addressName')->require();
         $table->string('addressLine1')->require();
         $table->string('addressLine2');

@@ -19,15 +19,13 @@ class CreateUsersTable extends Migration
         $table->id();
         $table->string('firstName');
         $table->string('lastName');
-        $table->foreignId('documentType')->constrained('document_types');
-        $table->string('documentNumber')->unique();
-        $table->unsignedSmallInteger('verificationDigit');
         $table->string('email')->unique();
         $table->timestamp('email_verified_at')->nullable();
         $table->tinyInteger('sendEmails')->default(1)->require();
         $table->string('password');
         $table->string('mobileNumber');
         $table->foreignId('category')->constrained('user_categories')->default(1);
+        $table->tinyInteger('isAdmin')->default(0)->require();
         $table->tinyInteger('active')->default(1)->require();
         $table->rememberToken();
         $table->timestamps();
