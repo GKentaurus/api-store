@@ -24,10 +24,12 @@ class User extends Authenticatable
   protected $fillable = [
     'firstName',
     'lastName',
+    'mobileNumber',
+    'age',
     'email',
     'sendEmails',
     'password',
-    'mobileNumber',
+    'termsAndConditions',
     'category',
     'isAdmin',
   ];
