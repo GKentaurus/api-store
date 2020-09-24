@@ -40,16 +40,16 @@ class UserController extends ApiController
     $this->validate($request, $rules);
 
     $form = $request->all();
-    $form['password'] = bcrypt($request->contrasena);
+    $form['password'] = bcrypt($request->password);
 
     $serie = [71, 67, 59, 53, 47, 43, 41, 37, 29, 23, 19, 17, 13, 7, 3, 0];
-    $documento = $request['documentNumber'];
+    $document = $request['documentNumber'];
     $serie = array_reverse($serie);
-    $documento = array_reverse(str_split($documento));
+    $document = array_reverse(str_split($document));
     $sum = 0;
 
-    for ($i = 1; $i <= count($documento); $i++) {
-      $sum = $sum + ($serie[$i] * $documento[$i - 1]);
+    for ($i = 1; $i <= count($document); $i++) {
+      $sum = $sum + ($serie[$i] * $document[$i - 1]);
     }
 
     $decimal = ($sum % 11);
