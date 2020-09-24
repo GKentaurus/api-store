@@ -22,6 +22,7 @@ class CreateCompaniesTable extends Migration
       $table->string('verificationDigit')->require();
       $table->string('billingEmail')->require();
       $table->timestamps();
+      $table->softDeletes();
     });
   }
 
