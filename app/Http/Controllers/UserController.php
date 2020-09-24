@@ -29,32 +29,26 @@ class UserController extends ApiController
     $rules = [
       'firstName' => 'required|min:3|max:100',
       'lastName' => 'required|min:3|max:100',
-      'documentType' => 'required|numeric',
-      'documentNumber' => 'required|numeric',
+      'mobileNumber' => 'required|numeric|digits_between:6,15',
+      'age' => 'required|numeric|min:18',
       'email' => 'required|email',
       'sendEmails' => 'required',
       'password' => 'required',
-      'mobileNumber' => 'required|numeric|digits_between:6,15',
-      'category' => 'required|numeric|min:1'
+      'termsAndConditions' => 'required|numeric'
     ];
     $this->validate($request, $rules);
 
-    $form = $request->all();
+    $form = $request->only(
+      'firstName',
+      'lastName',
+      'mobileNumber',
+      'age',
+      'email',
+      'sendEmails',
+      'password',
+      'termsAndConditions'
+    );
     $form['password'] = bcrypt($request->password);
-
-    $serie = [71, 67, 59, 53, 47, 43, 41, 37, 29, 23, 19, 17, 13, 7, 3, 0];
-    $document = $request['documentNumber'];
-    $serie = array_reverse($serie);
-    $document = array_reverse(str_split($document));
-    $sum = 0;
-
-    for ($i = 1; $i <= count($document); $i++) {
-      $sum = $sum + ($serie[$i] * $document[$i - 1]);
-    }
-
-    $decimal = ($sum % 11);
-    $form['verificationDigit'] = $decimal > 1 ? 11 - $decimal : $decimal;
-
     $user = User::create($form);
 
     return $this->showOne($user, 201);
