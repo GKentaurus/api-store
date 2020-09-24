@@ -117,7 +117,7 @@ class DatabaseSeeder extends Seeder
       'verificationDigit' => '1',
       'email' => 'correo1@correo.com',
       'sendEmails' => 1,
-      'password' => Hash::make('123pormi'),
+      'password' => bcrypt('123pormi'),
       'mobileNumber' => '3165554778',
       'category' => 1,
     ]);
@@ -129,7 +129,7 @@ class DatabaseSeeder extends Seeder
       'verificationDigit' => '7',
       'email' => 'correo2@correo.com',
       'sendEmails' => 1,
-      'password' => Hash::make('123pormi'),
+      'password' => bcrypt('123pormi'),
       'mobileNumber' => '3156668987',
       'category' => 2,
     ]);
@@ -141,7 +141,7 @@ class DatabaseSeeder extends Seeder
       'verificationDigit' => '8',
       'email' => 'correo3@correo.com',
       'sendEmails' => 1,
-      'password' => Hash::make('123pormi'),
+      'password' => bcrypt('123pormi'),
       'mobileNumber' => '3187844521',
       'category' => 3,
     ]);
@@ -153,11 +153,17 @@ class DatabaseSeeder extends Seeder
       'verificationDigit' => '8',
       'email' => 'correo4@correo.com',
       'sendEmails' => 1,
-      'password' => Hash::make('123pormi'),
+      'password' => bcrypt('123pormi'),
       'mobileNumber' => '3112544784',
       'category' => 4,
     ]);
     User::factory()->times($users)->create();
+
+    $users = User::all();
+
+    foreach ($users as $user) {
+      $user->createToken('accessToken')->accessToken;
+    }
 
     /**
      * ANCHOR Address
