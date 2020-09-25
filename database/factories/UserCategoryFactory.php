@@ -23,8 +23,8 @@ class UserCategoryFactory extends Factory
   public function definition()
   {
     return [
-      'categoryName' => $this->faker->firstName,
-      'idPriceList' => $this->faker->numberBetween($min = 1, $max = 5),
+      'categoryName' => $this->faker->paragraph(2),
+      'idPriceList' => $this->faker->numberBetween(1, config('app.seedPriceListTable'), 4),
       'active' => true
     ];
   }

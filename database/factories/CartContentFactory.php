@@ -2,18 +2,18 @@
 
 namespace Database\Factories;
 
-use App\Models\Price;
+use App\Models\CartContent;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
 
-class PriceFactory extends Factory
+class CartContentFactory extends Factory
 {
   /**
    * The name of the factory's corresponding model.
    *
    * @var string
    */
-  protected $model = Price::class;
+  protected $model = CartContent::class;
 
   /**
    * Define the model's default state.
@@ -23,8 +23,9 @@ class PriceFactory extends Factory
   public function definition()
   {
     return [
-      'idProduct' => $this->faker->numberBetween(1, config('app.seedProductTable'), 5),
-      'idPriceList' => $this->faker->numberBetween(1, config('app.seedPriceListTable'), 4),
+      'idCart' => $this->faker->numberBetween(1, config('app.seedCartTable', 4)),
+      'idProduct' => $this->faker->numberBetween(1, config('app.seedProductTable', 5)),
+      'quantity' => $this->faker->numberBetween(1, 10),
       'price' => $this->faker->numberBetween(100, 500),
     ];
   }

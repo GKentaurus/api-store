@@ -25,8 +25,8 @@ class ProductFactory extends Factory
     return [
       'model' => $this->faker->unique()->word,
       'description' => $this->faker->text($maxNbChars = 200),
-      'barcode' => $this->faker->numberBetween($min = 1111111111111, $max = 9999999999999),
-      'quantity' => $this->faker->numberBetween($min = 0, $max = 200),
+      'barcode' => '771010' . $this->faker->numberBetween(config('app.seedProductTable', 5), 9999),
+      'quantity' => $this->faker->numberBetween(50, 200),
       'active' => 1,
     ];
   }

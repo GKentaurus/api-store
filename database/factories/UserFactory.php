@@ -25,10 +25,14 @@ class UserFactory extends Factory
     return [
       'firstName' => $this->faker->firstName,
       'lastName' => $this->faker->lastName,
-      'email' => $this->faker->safeEmail,
-      'password' => $this->faker->password($min = 8, $max = 20),
       'mobileNumber' => $this->faker->e164PhoneNumber,
+      'age' => $this->faker->numberBetween(18, 99),
+      'email' => $this->faker->safeEmail,
+      'sendEmails' => $this->faker->boolean(70),
+      'password' => bcrypt($this->faker->password($min = 8, $max = 20)),
+      'termsAndConditions' => 1,
       'category' => $this->faker->numberBetween($min = 1, $max = 5),
+      'isAdmin' => 0,
     ];
   }
 }
