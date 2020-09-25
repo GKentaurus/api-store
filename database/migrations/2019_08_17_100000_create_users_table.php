@@ -17,13 +17,15 @@ class CreateUsersTable extends Migration
     if (!Schema::hasTable('users') || Config::get('app.dropUsers', true)) {
       Schema::create('users', function (Blueprint $table) {
         $table->id();
-        $table->string('firstName');
-        $table->string('lastName');
-        $table->string('email')->unique();
+        $table->string('firstName')->require();
+        $table->string('lastName')->require();
+        $table->string('mobileNumber')->require();
+        $table->tinyInteger('age')->require();
+        $table->string('email')->unique()->require();
         $table->timestamp('email_verified_at')->nullable();
         $table->tinyInteger('sendEmails')->default(1)->require();
-        $table->string('password');
-        $table->string('mobileNumber');
+        $table->string('password')->require();
+        $table->tinyInteger('termsAndConditions');
         $table->foreignId('category')->constrained('user_categories')->default(1);
         $table->tinyInteger('isAdmin')->default(0)->require();
         $table->tinyInteger('active')->default(1)->require();
