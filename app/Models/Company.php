@@ -11,7 +11,7 @@ class Company extends Model
 {
   use HasFactory, Notifiable, SoftDeletes;
 
-  protected $table = "company";
+  protected $table = "companies";
 
   protected $fillable = [
     'idUser',
