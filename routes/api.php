@@ -40,4 +40,16 @@ Route::middleware('auth:api')->group(function () {
    * Ruta de TEST Logged
    */
   Route::get('/test/logged', [TestController::class, 'logged']);
+
+  /**
+   * Rutas de USER
+   */
+  Route::get('users', [UserController::class, 'showAllUsers']);
+  Route::get('users/me', [UserController::class, 'showCurrentUser']);
+  Route::put('users/me', [UserController::class, 'updateCurrentUser']);
+  Route::delete('users/me', [UserController::class, 'deleteCurrentUser']);
+
+  Route::post('users/', [UserController::class, 'storeUserByAdmin']);
+  Route::put('users/{id}', [UserController::class, 'updateUserByAdmin']);
+  Route::delete('users/{id}', [UserController::class, 'deleteUserByAdmin']);
 });

@@ -4,41 +4,48 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use App\Http\Controllers\ApiController;
 
 class UserController extends ApiController
 {
+  // SECTION User logged methods"
+
   /**
-   * Display a listing of the resource.
+   * ANCHOR Show All Users model
+   * Display a Users collection.
    *
    * @return \Illuminate\Http\Response
    */
-  public function index()
+  public function showAllUsers()
   {
     return $this->showAll(User::all());
   }
 
   /**
-   * Store a newly created resource in storage.
+   * ANCHOR Show current user model
+   * Display the logged user.
+   *
+   * @return \App\Traits\ApiResponser
+   */
+  public function showCurrentUser()
+  {
+    $user = User::findOrFail(auth('api')->user()->id);
+    return $this->showOne($user);
+  }
+
+  /**
+   * ANCHOR Update current user model
+   * Update the logged user.
    *
    * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
+   * @return \App\Traits\ApiResponser
    */
-  public function store(Request $request)
+  public function updateCurrentUser(Request $request)
   {
-    $rules = [
-      'firstName' => 'required|min:3|max:100',
-      'lastName' => 'required|min:3|max:100',
-      'mobileNumber' => 'required|numeric|digits_between:6,15',
-      'age' => 'required|numeric|min:18',
-      'email' => 'required|email',
-      'sendEmails' => 'required',
-      'password' => 'required',
-      'termsAndConditions' => 'required|numeric'
-    ];
-    $this->validate($request, $rules);
+    $user = User::findOrFail(auth('api')->user()->id);
 
-    $form = $request->only(
+    $user->fill($request->only([
       'firstName',
       'lastName',
       'mobileNumber',
@@ -46,46 +53,127 @@ class UserController extends ApiController
       'email',
       'sendEmails',
       'password',
-      'termsAndConditions'
-    );
-    $form['password'] = bcrypt($request->password);
-    $user = User::create($form);
+    ]));
 
-    return $this->showOne($user, 201);
+    if (!empty($request->password)) {
+      $user->password = bcrypt($request->password);
+      $user->save();
+      $token = $user->createToken('API-store')->accessToken;
+      return $this->successResponse($token, 201);
+    } else {
+      $user->save();
+      return $this->showOne($user);
+    }
   }
 
   /**
-   * Display the specified resource.
+   * ANCHOR Delete current user model
+   * Soft delete of the logged user.
    *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
+   * @return \App\Traits\ApiResponser
    */
-  public function show($user)
+  public function deleteCurrentUser()
   {
-    $user = User::findOrFail($user);
-    return $user;
+    $user = User::destroy(auth('api')->user()->id);
+    return $this->messageResponse('El usuario ha sido destruido');
   }
 
+  // !SECTION End User logged methods
+
+
+
+
+  // SECTION User methods by Admin
+
   /**
-   * Update the specified resource in storage.
+   * ANCHOR User created and stored by Admin
+   * Admin can create and store a new user.
    *
    * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
+   * @return \App\Traits\ApiResponser
    */
-  public function update(Request $request, $user)
+  public function storeUserByAdmin(Request $request)
   {
-    return 'update ' . $user;
+    if (Gate::allows('adminPermission')) {
+      $rules = [
+        'firstName' => 'required|min:3|max:100',
+        'lastName' => 'required|min:3|max:100',
+        'mobileNumber' => 'required|numeric|digits_between:6,15',
+        'age' => 'required|numeric|min:18',
+        'email' => 'required|email',
+        'sendEmails' => 'required',
+        'password' => 'required',
+        'termsAndConditions' => 'required|numeric'
+      ];
+      $this->validate($request, $rules);
+
+      $form = $request->only([
+        'firstName',
+        'lastName',
+        'mobileNumber',
+        'age',
+        'email',
+        'sendEmails',
+        'password',
+        'termsAndConditions'
+      ]);
+      $form['password'] = bcrypt($request->password);
+      $user = User::create($form);
+
+      return $this->showOne($user, 201);
+    } else {
+      return $this->errorResponse('No tiene permisos para ejecutar esta tarea', 403);
+    }
   }
 
   /**
-   * Remove the specified resource from storage.
+   * ANCHOR Update current user model by Admin
+   * Admin can update the user getted by args
    *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
+   * @param  \Illuminate\Http\Request  $request
+   * @param  string $id
+   * @return \App\Traits\ApiResponser
    */
-  public function destroy($user)
+  public function updateUserByAdmin(Request $request, $id)
   {
-    USer::destroy($user);
+    if (Gate::allows('adminPermission')) {
+      $user = User::findOrFail($id);
+
+      $user->fill($request->only([
+        'firstName',
+        'lastName',
+        'mobileNumber',
+        'age',
+        'email',
+        'sendEmails',
+        'password',
+      ]));
+
+      if (!empty($request->password)) {
+        $user->password = bcrypt($request->password);
+        $user->save();
+        $token = $user->createToken('API-store')->accessToken;
+        return $this->successResponse($token, 201);
+      } else {
+        $user->save();
+        return $this->showOne($user);
+      }
+    } else {
+      return $this->errorResponse('No tiene permisos para ejecutar esta tarea', 403);
+    }
   }
+
+  /**
+   * ANCHOR Delete current user model
+   * Soft delete of the logged user.
+   *
+   * @return \App\Traits\ApiResponser
+   */
+  public function deleteUserByAdmin($id)
+  {
+    User::destroy($id);
+    return $this->successResponse('El usuario ' . $id . ' ha sido destruido', 201);
+  }
+
+  // !SECTION End Admin methods
 }

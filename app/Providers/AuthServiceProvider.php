@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Models\User;
 use Laravel\Passport\Passport;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -29,5 +30,13 @@ class AuthServiceProvider extends ServiceProvider
     Passport::routes();
 
     Passport::personalAccessClient('AccessToken');
+
+    /**
+     *  @param $userLogged  User caught bv token
+     *  @param $userRequire User required to the action
+     */
+    Gate::define('adminPermission', function ($user) {
+      return $user->isAdmin;
+    });
   }
 }
