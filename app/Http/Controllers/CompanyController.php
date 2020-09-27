@@ -2,33 +2,57 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\User;
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
-class CompanyController extends Controller
+class CompanyController extends ApiController
 {
+  // SECTION Normal methods
+
+
   /**
-   * Display a listing of the resource.
+   * ANCHOR Show user companies
+   * Display a companies collection from the current user.
    *
-   *
-   * @return \Illuminate\Http\Response
+   * @return \App\Traits\ApiResponser
    */
-  public function index()
+  public function showUserCompanies()
   {
-    return $this->showAll(Company::all());
+    $companies = User::find(auth('api')->user()->id)->companies;
+    return $this->showAll($companies);
   }
 
   /**
-   * Store a newly created resource in storage.
+   * ANCHOR Show a specific user company
+   * Display a companies collection from the current user.
    *
+   * @param  string  $id
+   * @return \App\Traits\ApiResponser
+   */
+  public function showUserCompany($id)
+  {
+    $company = User::find(auth('api')->user()->id)->companies()->where('id', $id)->first();
+
+    if (gettype($company) == "NULL") {
+      return $this->errorResponse('La compañía requerida no esta asociada a este usuario o no se encuentra', 403);
+    } else {
+      return $this->showOne($company);
+    }
+  }
+
+  /**
+   * ANCHOR Store a company to the specific user.
    *
    * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
+   * @return \App\Traits\ApiResponser
    */
-  public function store(Request $request)
+  public function storeUserCompany(Request $request)
   {
+    $idUser = auth('api')->user()->id;
+
     $rules = [
-      'idUser' => 'required',
       'companyName' => 'required',
       'documentType' => 'required',
       'documentNumber' => 'required',
@@ -38,13 +62,13 @@ class CompanyController extends Controller
     $this->validate($request, $rules);
 
     $form = $request->only(
-      'idUser',
       'companyName',
       'documentType',
       'documentNumber',
       'billingEmail',
     );
 
+    $form['idUser'] = $idUser;
     $serie = [71, 67, 59, 53, 47, 43, 41, 37, 29, 23, 19, 17, 13, 7, 3, 0];
     $document = $request['documentNumber'];
     $serie = array_reverse($serie);
@@ -64,36 +88,154 @@ class CompanyController extends Controller
   }
 
   /**
-   * Display the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function show($id)
-  {
-    return $this->showOne(Company::findOrFail($id));
-  }
-
-  /**
-   * Update the specified resource in storage.
+   * ANCHOR Update current company
+   * Update the logged user.
    *
    * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
+   * @param  string  $id
+   * @return \App\Traits\ApiResponser
    */
-  public function update(Request $request, $id)
+  public function updateUserCompany(Request $request, $id)
   {
-    //
+    $company = User::find(auth('api')->user()->id)->companies()->where('id', $id)->first();
+
+    $company->fill($request->only([
+      'companyName',
+      'documentType',
+      'documentNumber',
+      'billingEmail',
+    ]));
+
+    $company->save();
+    return $this->showOne($company);
   }
 
   /**
-   * Remove the specified resource from storage.
+   * ANCHOR Destry current company
+   * Update the logged user.
    *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
+   * @param  string  $id
+   * @return \App\Traits\ApiResponser
    */
-  public function destroy($id)
+  public function destroyUserCompany($id)
   {
-    Company::destroy($id);
+    $company = User::find(auth('api')->user()->id)->companies()->where('id', $id)->first();
+    $deleted = Company::destroy($company->id);
+    return $this->successResponse('La compañia ' . $id . ' ha sido eliminada.', 200);
   }
+
+  // !SECTION End Admin methods
+
+  // SECTION Admin methods
+
+  /**
+   * ANCHOR Show all companies
+   * Display a companies collection from the current user.
+   *
+   * @return \App\Traits\ApiResponser
+   */
+  public function showAllCompanies()
+  {
+    if (Gate::allows('isAdmin')) {
+      return $this->showAll(Company::all());
+    }
+  }
+
+  /**
+   * ANCHOR Show a specific company
+   * Display a companies collection from the current user.
+   *
+   * @param string $id
+   * @return \App\Traits\ApiResponser
+   */
+  public function showCompanyByAdmin($id)
+  {
+    if (Gate::allows('isAdmin')) {
+      return $this->showOne(Company::findOrFail($id));
+    }
+  }
+
+  /**
+   * ANCHOR Store a new company
+   * Display a companies collection from the current user.
+   *
+   * @param string $id
+   * @return \App\Traits\ApiResponser
+   */
+  public function storeCompanyByAdmin(Request $request, $id)
+  {
+    if (Gate::allows('isAdmin')) {
+      $rules = [
+        'idUser' => 'required',
+        'companyName' => 'required',
+        'documentType' => 'required',
+        'documentNumber' => 'required',
+        'billingEmail' => 'required',
+      ];
+
+      $this->validate($request, $rules);
+
+      $form = $request->only(
+        'idUser',
+        'companyName',
+        'documentType',
+        'documentNumber',
+        'billingEmail',
+      );
+      $serie = [71, 67, 59, 53, 47, 43, 41, 37, 29, 23, 19, 17, 13, 7, 3, 0];
+      $document = $request['documentNumber'];
+      $serie = array_reverse($serie);
+      $document = array_reverse(str_split($document));
+      $sum = 0;
+
+      for ($i = 1; $i <= count($document); $i++) {
+        $sum = $sum + ($serie[$i] * $document[$i - 1]);
+      }
+
+      $decimal = ($sum % 11);
+      $form['verificationDigit'] = $decimal > 1 ? 11 - $decimal : $decimal;
+
+      $company = Company::create($form);
+
+      return $this->showOne($company);
+    }
+  }
+
+  /**
+   * ANCHOR Update current company
+   * Update the logged user.
+   *
+   * @param  \Illuminate\Http\Request  $request
+   * @param  string  $id
+   * @return \App\Traits\ApiResponser
+   */
+  public function updateCompanyByAdmin(Request $request, $id)
+  {
+    $company = Company::findOrFail($id);
+
+    $company->fill($request->only([
+      'companyName',
+      'documentType',
+      'documentNumber',
+      'billingEmail',
+    ]));
+
+    $company->save();
+    return $this->showOne($company);
+  }
+
+  /**
+   * ANCHOR Destry current company
+   * Update the logged user.
+   *
+   * @param  string  $id
+   * @return \App\Traits\ApiResponser
+   */
+  public function destroyCompanyByAdmin($id)
+  {
+    $deleted = Company::destroy($id);
+    return $this->successResponse('La compañia ' . $id . ' ha sido eliminada.', 200);
+  }
+
+  // !SECTION End Admin methods
 }

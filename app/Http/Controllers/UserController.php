@@ -9,18 +9,7 @@ use App\Http\Controllers\ApiController;
 
 class UserController extends ApiController
 {
-  // SECTION User logged methods"
-
-  /**
-   * ANCHOR Show All Users model
-   * Display a Users collection.
-   *
-   * @return \Illuminate\Http\Response
-   */
-  public function showAllUsers()
-  {
-    return $this->showAll(User::all());
-  }
+  // SECTION Normal methods
 
   /**
    * ANCHOR Show current user model
@@ -75,7 +64,7 @@ class UserController extends ApiController
   public function deleteCurrentUser()
   {
     $user = User::destroy(auth('api')->user()->id);
-    return $this->messageResponse('El usuario ha sido destruido');
+    return $this->successResponse('El usuario ha sido destruido', 200);
   }
 
   // !SECTION End User logged methods
@@ -83,10 +72,39 @@ class UserController extends ApiController
 
 
 
-  // SECTION User methods by Admin
+  // SECTION Admin methods
 
   /**
-   * ANCHOR User created and stored by Admin
+   * ANCHOR Show all users
+   * Display a Users collection.
+   *
+   * @return \App\Traits\ApiResponser
+   */
+  public function showAllUsers()
+  {
+    if (Gate::allows('isAdmin')) {
+      return $this->showAll(User::all());
+    }
+  }
+
+  /**
+   * ANCHOR Show specific user
+   * Display the logged user.
+   *
+   * @return \App\Traits\ApiResponser
+   */
+  public function showUserByAdmin($id)
+  {
+    if (Gate::allows('isAdmin')) {
+      $user = User::findOrFail($id);
+      return $this->showOne($user);
+    } else {
+      return $this->errorResponse('No tiene permisos para ejecutar esta tarea', 403);
+    }
+  }
+
+  /**
+   * ANCHOR Create and store new user
    * Admin can create and store a new user.
    *
    * @param  \Illuminate\Http\Request  $request
@@ -94,7 +112,7 @@ class UserController extends ApiController
    */
   public function storeUserByAdmin(Request $request)
   {
-    if (Gate::allows('adminPermission')) {
+    if (Gate::allows('isAdmin')) {
       $rules = [
         'firstName' => 'required|min:3|max:100',
         'lastName' => 'required|min:3|max:100',
@@ -127,7 +145,7 @@ class UserController extends ApiController
   }
 
   /**
-   * ANCHOR Update current user model by Admin
+   * ANCHOR Update specific user model
    * Admin can update the user getted by args
    *
    * @param  \Illuminate\Http\Request  $request
@@ -136,7 +154,7 @@ class UserController extends ApiController
    */
   public function updateUserByAdmin(Request $request, $id)
   {
-    if (Gate::allows('adminPermission')) {
+    if (Gate::allows('isAdmin')) {
       $user = User::findOrFail($id);
 
       $user->fill($request->only([
@@ -164,15 +182,17 @@ class UserController extends ApiController
   }
 
   /**
-   * ANCHOR Delete current user model
+   * ANCHOR Delete specific user model
    * Soft delete of the logged user.
    *
    * @return \App\Traits\ApiResponser
    */
   public function deleteUserByAdmin($id)
   {
-    User::destroy($id);
-    return $this->successResponse('El usuario ' . $id . ' ha sido destruido', 201);
+    if (Gate::allows('isAdmin')) {
+      User::destroy($id);
+      return $this->successResponse('El usuario ' . $id . ' ha sido destruido', 201);
+    }
   }
 
   // !SECTION End Admin methods
