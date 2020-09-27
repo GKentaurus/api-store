@@ -4,6 +4,7 @@ use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CartContentController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\DocumentTypeController;
 use App\Http\Controllers\PriceController;
 use App\Http\Controllers\PriceListController;
@@ -24,32 +25,74 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+// SECTION Authentication routes
 /**
- * Ruta de TEST Unlogged
- */
-Route::get('/test/unlogged', [TestController::class, 'unlogged']);
-
-/**
- * Rutas de Passport
+ * ANCHOR Passport routes
  */
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/register', [AuthController::class, 'register']);
 
+// !SECTION End Authentication routes
+
 Route::middleware('auth:api')->group(function () {
-  /**
-   * Ruta de TEST Logged
-   */
-  Route::get('/test/logged', [TestController::class, 'logged']);
+  // SECTION Admin routes
+  Route::prefix('admin')->group(function () {
+    /**
+     * ANCHOR USER routes
+     */
+    Route::get('users', [UserController::class, 'showAllUsers']);
+    Route::get('users/{id}', [UserController::class, 'showUserByAdmin']);
+    Route::post('users/', [UserController::class, 'storeUserByAdmin']);
+    Route::put('users/{id}', [UserController::class, 'updateUserByAdmin']);
+    Route::delete('users/{id}', [UserController::class, 'deleteUserByAdmin']);
 
-  /**
-   * Rutas de USER
-   */
-  Route::get('users', [UserController::class, 'showAllUsers']);
-  Route::get('users/me', [UserController::class, 'showCurrentUser']);
-  Route::put('users/me', [UserController::class, 'updateCurrentUser']);
-  Route::delete('users/me', [UserController::class, 'deleteCurrentUser']);
+    /**
+     * ANCHOR COMPANY routes
+     */
+    Route::get('companies', [CompanyController::class, 'showAllCompanies']);
+    Route::get('companies/{id}', [CompanyController::class, 'showCompanyByAdmin']);
+    Route::post('companies', [CompanyController::class, 'storeCompanyByAdmin']);
+    Route::put('companies/{id}', [CompanyController::class, 'updateCompanyByAdmin']);
+    Route::delete('companies/{id}', [CompanyController::class, 'destroyCompanyByAdmin']);
 
-  Route::post('users/', [UserController::class, 'storeUserByAdmin']);
-  Route::put('users/{id}', [UserController::class, 'updateUserByAdmin']);
-  Route::delete('users/{id}', [UserController::class, 'deleteUserByAdmin']);
+    /**
+     * ANCHOR ADDRESS routes
+     */
+    Route::get('addresses', [AddressController::class, 'showAllAddresses']);
+    Route::get('addresses/{id}', [AddressController::class, 'showAddressByAdmin']);
+    Route::post('addresses', [AddressController::class, 'storeAddressByAdmin']);
+    Route::put('addresses/{id}', [AddressController::class, 'updateAddressByAdmin']);
+    Route::delete('addresses/{id}', [AddressController::class, 'destroyAddressByAdmin']);
+  });
+  // !SECTION End Admin routes
+
+  // SECTION Customer (users) routes
+  Route::prefix('users')->group(function () {
+    /**
+     * ANCHOR USER routes
+     */
+
+    Route::get('own', [UserController::class, 'showCurrentUser']);
+    Route::put('own', [UserController::class, 'updateCurrentUser']);
+    Route::delete('own', [UserController::class, 'deleteCurrentUser']);
+
+    /**
+     * ANCHOR COMPANY routes
+     */
+    Route::get('companies', [CompanyController::class, 'showUserCompanies']);
+    Route::get('companies/{id}', [CompanyController::class, 'showUserCompany']);
+    Route::post('companies', [CompanyController::class, 'storeUserCompany']);
+    Route::put('companies/{id}', [CompanyController::class, 'updateUserCompany']);
+    Route::delete('companies/{id}', [CompanyController::class, 'deleteUserCompany']);
+
+    /**
+     * ANCHOR ADDRESS routes
+     */
+    Route::get('companies/{idCompany}/addresses', [AddressController::class, 'showAllCompaniesAddresses']);
+    Route::get('companies/{idCompany}/addresses/{idAddress}', [AddressController::class, 'showCompanyAddress']);
+    Route::post('companies/{idCompany}/addresses', [AddressController::class, 'storeCompanyAddress']);
+    Route::put('companies/{idCompany}/addresses/{idAddress}', [AddressController::class, 'updateCompanyAddress']);
+    Route::delete('companies/{idCompany}/addresses/{idAddress}', [AddressController::class, 'deleteCompanyAddress']);
+  });
+  // !SECTION End Customer (users) routes
 });
