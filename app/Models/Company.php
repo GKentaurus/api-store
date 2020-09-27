@@ -25,4 +25,9 @@ class Company extends Model
   protected $hidden = [];
 
   protected $casts = [];
+
+  public function addresses()
+  {
+    return $this->hasMany(Address::class, 'idCompany');
+  }
 }

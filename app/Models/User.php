@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Company;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -52,13 +53,8 @@ class User extends Authenticatable
     'email_verified_at' => 'datetime',
   ];
 
-  // public function tipoDoc()
-  // {
-  //   return $this->belongsTo(TipoDoc::class, 'tipoDoc', 'id');
-  // }
-
-  // public function categoriaCliente()
-  // {
-  //   return $this->belongsTo(CategoriaUsuario::class, 'id', 'categoria');
-  // }
+  public function companies()
+  {
+    return $this->hasMany(Company::class, 'idUser');
+  }
 }

@@ -26,9 +26,4 @@ class Address extends Model
   protected $hidden = [];
 
   protected $casts = [];
-
-  // public function idUsuario()
-  // {
-  //   return $this->belongsTo(User::class, 'id', 'idUsuario');
-  // }
 }
