@@ -35,7 +35,7 @@ class AuthServiceProvider extends ServiceProvider
      *  @param $userLogged  User caught bv token
      *  @param $userRequire User required to the action
      */
-    Gate::define('adminPermission', function ($user) {
+    Gate::define('isAdmin', function ($user) {
       return $user->isAdmin;
     });
   }
