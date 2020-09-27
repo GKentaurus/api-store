@@ -247,10 +247,10 @@ return [
    * ANCHOR Constantes para los Database Seeders
    * $numberFactories => integer
    */
-  'seedAddressTable' => 8, // NOTE  min seedCompanyTable * 2
+  'seedAddressTable' => 50, // NOTE  min seedCompanyTable * 2
   'seedCartTable' => 4, //  NOTE min = seedUserTable
   'seedCardContentTable' => 50,
-  'seedCompanyTable' => 4,  //  NOTE min = seedUserTable
+  'seedCompanyTable' => 20,  //  NOTE min = seedUserTable
   'seedDocumentTypeTable' => 4, // NOTE min = 4
   'seedOrderTable'  => 4, // NOTE min <= seedCartTable
   'seedOrderStatusTable' => 10,  // NOTE min = 7
