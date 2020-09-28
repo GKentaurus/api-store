@@ -63,6 +63,12 @@ Route::middleware('auth:api')->group(function () {
     Route::post('addresses', [AddressController::class, 'storeAddressByAdmin']);
     Route::put('addresses/{id}', [AddressController::class, 'updateAddressByAdmin']);
     Route::delete('addresses/{id}', [AddressController::class, 'destroyAddressByAdmin']);
+
+    /**
+     * ANCHOR CART routes
+     */
+    Route::get('carts', [CartController::class, 'showAllCarts']);
+    Route::get('carts/{idCart}', [CartController::class, 'showSpecificCarts']);
   });
   // !SECTION End Admin routes
 
@@ -93,6 +99,11 @@ Route::middleware('auth:api')->group(function () {
     Route::post('companies/{idCompany}/addresses', [AddressController::class, 'storeCompanyAddress']);
     Route::put('companies/{idCompany}/addresses/{idAddress}', [AddressController::class, 'updateCompanyAddress']);
     Route::delete('companies/{idCompany}/addresses/{idAddress}', [AddressController::class, 'deleteCompanyAddress']);
+
+    /**
+     * ANCHOR CART routes
+     */
+    Route::get('cart', [CartController::class, 'showLastestCart']);
   });
   // !SECTION End Customer (users) routes
 });
