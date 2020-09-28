@@ -47,6 +47,7 @@ class AuthController extends ApiController
       'termsAndConditions'
     );
     $form['password'] = bcrypt($request->password);
+    $form['category'] = 1;
     $user = User::create($form);
 
     $token = $user->createToken('API-store')->accessToken;
