@@ -15,6 +15,7 @@ class Cart extends Model
 
   protected $fillable = [
     'idUser',
+    'active',
   ];
 
   protected $hidden = [];
@@ -24,5 +25,10 @@ class Cart extends Model
   public function order()
   {
     return $this->hasOne(Order::class);
+  }
+
+  public function cartContent()
+  {
+    return $this->hasMany(CartContent::class, 'idCart');
   }
 }
