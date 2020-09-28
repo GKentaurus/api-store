@@ -67,8 +67,13 @@ Route::middleware('auth:api')->group(function () {
     /**
      * ANCHOR CART routes
      */
-    Route::get('carts', [CartController::class, 'showAllCarts']);
-    Route::get('carts/{idCart}', [CartController::class, 'showSpecificCarts']);
+    Route::get('carts', [CartController::class, 'showAllCartsByAdmin']);
+    Route::get('carts/{idCart}', [CartController::class, 'showSpecificCartsByAdmin']);
+
+    /**
+     * ANCHOR PRODUCT routes
+     */
+    Route::get('products', [ProductController::class, 'showAllProducts']);
   });
   // !SECTION End Admin routes
 
