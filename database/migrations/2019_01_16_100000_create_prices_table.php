@@ -20,7 +20,7 @@ class CreatePricesTable extends Migration
         $table->id();
         $table->foreignId('idProduct')->constrained('products');
         $table->foreignId('idPriceList')->constrained('price_lists')->default(1);
-        $table->string('price');
+        $table->double('price');
         $table->timestamps();
         $table->softDeletes();
       });
