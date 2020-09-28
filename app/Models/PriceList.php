@@ -20,4 +20,9 @@ class PriceList extends Model
   protected $hidden = [];
 
   protected $casts = [];
+
+  public function prices()
+  {
+    return $this->hasMany(Price::class, 'idPriceList');
+  }
 }

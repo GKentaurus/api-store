@@ -24,4 +24,9 @@ class Product extends Model
   protected $hidden = [];
 
   protected $casts = [];
+
+  public function prices()
+  {
+    return $this->hasMany(Price::class, 'idProduct');
+  }
 }
