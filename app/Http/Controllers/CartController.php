@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cart;
 use App\Models\CartContent;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 
 class CartController extends ApiController
 {
@@ -41,21 +42,25 @@ class CartController extends ApiController
    *
    * @return \App\Traits\ApiResponse
    */
-  public function showAllCarts()
+  public function showAllCartsByAdmin()
   {
-    $cart = Cart::all();
+    if (Gate::allows('isAdmin')) {
+      $cart = Cart::all();
 
-    $counter = $cart->map(function ($item, $key) {
-      $total = 0;
-      foreach ($item->cartContent as $product) {
-        $total += $product->quantity * $product->price;
-      }
+      $carts = $cart->map(function ($item) {
+        $total = 0;
+        foreach ($item->cartContent as $product) {
+          $total += $product->quantity * $product->price;
+        }
 
-      $item['subtotal'] = $total;
-      return $item;
-    });
+        $item['subtotal'] = $total;
+        return $item;
+      });
 
-    return $counter;
+      return $this->showAll($carts);
+    } else {
+      return $this->errorResponse('Acceso no autorizado', 403);
+    }
   }
 
   /**
@@ -63,15 +68,19 @@ class CartController extends ApiController
    *
    * @return \App\Traits\ApiResponse
    */
-  public function showSpecificCarts($id)
+  public function showSpecificCartsByAdmin($id)
   {
-    $cart = Cart::findOrFail($id);
-    $total = 0;
-    foreach ($cart->cartContent as $product) {
-      $total += $product->quantity * $product->price;
+    if (Gate::allows('isAdmin')) {
+      $cart = Cart::findOrFail($id);
+      $total = 0;
+      foreach ($cart->cartContent as $product) {
+        $total += $product->quantity * $product->price;
+      }
+      $cart['total'] = $total;
+      return $this->showOne($cart);
+    } else {
+      return $this->errorResponse('Acceso no autorizado', 403);
     }
-    $cart['total'] = $total;
-    return $this->showOne($cart);
   }
   // !SECTION End Admin methods
 }
