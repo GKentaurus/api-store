@@ -14,14 +14,12 @@ class CreatePriceListsTable extends Migration
    */
   public function up()
   {
-    if (!Schema::hasTable('price_lists') || Config::get('app.dropPriceLists', true)) {
-      Schema::create('price_lists', function (Blueprint $table) {
-        $table->id();
-        $table->string('listName')->require()->unique();
-        $table->timestamps();
-        $table->softDeletes();
-      });
-    }
+    Schema::create('price_lists', function (Blueprint $table) {
+      $table->id();
+      $table->string('listName')->require()->unique();
+      $table->timestamps();
+      $table->softDeletes();
+    });
   }
 
   /**
@@ -31,8 +29,6 @@ class CreatePriceListsTable extends Migration
    */
   public function down()
   {
-    if (Config::get('app.dropPriceLists', false)) {
-      Schema::dropIfExists('price_lists');
-    }
+    Schema::dropIfExists('price_lists');
   }
 }

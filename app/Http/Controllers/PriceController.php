@@ -26,9 +26,8 @@ class PriceController extends ApiController
   public function store(Request $request)
   {
     $rules = [
-      'idPrice' => 'required',
-      'idProduct' => 'required',
-      'idPriceList' => 'required',
+      'product_id' => 'required',
+      'price_list_id' => 'required',
       'price' => 'required',
     ];
 

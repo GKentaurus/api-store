@@ -23,8 +23,8 @@ class CartContentFactory extends Factory
   public function definition()
   {
     return [
-      'idCart' => $this->faker->numberBetween(1, config('app.seedCartTable', 4)),
-      'idProduct' => $this->faker->numberBetween(1, config('app.seedProductTable', 5)),
+      'cart_id' => $this->faker->numberBetween(1, config('app.seedCartTable', 4)),
+      'product_id' => $this->faker->numberBetween(1, config('app.seedProductTable', 5)),
       'quantity' => $this->faker->numberBetween(1, 10),
       'price' => $this->faker->numberBetween(100, 500),
     ];

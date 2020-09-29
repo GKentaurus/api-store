@@ -14,8 +14,8 @@ class Company extends Model
   protected $table = "companies";
 
   protected $fillable = [
-    'idUser',
-    'companyName',
+    'user_id',
+    'name',
     'documentType',
     'documentNumber',
     'verificationDigit',
@@ -28,6 +28,6 @@ class Company extends Model
 
   public function addresses()
   {
-    return $this->hasMany(Address::class, 'idCompany');
+    return $this->hasMany(Address::class);
   }
 }

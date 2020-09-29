@@ -14,9 +14,9 @@ class Order extends Model
   protected $table = "orders";
 
   protected $fillable = [
-    'idCart',
-    'idOrderStatus',
-    'idPaymentMethod'
+    'cart_id',
+    'order_status_id',
+    'payment_method_id'
   ];
 
   protected $hidden = [];

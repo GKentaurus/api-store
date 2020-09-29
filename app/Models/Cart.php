@@ -14,7 +14,7 @@ class Cart extends Model
   protected $table = "carts";
 
   protected $fillable = [
-    'idUser',
+    'user_id',
     'active',
   ];
 
@@ -29,6 +29,6 @@ class Cart extends Model
 
   public function cartContent()
   {
-    return $this->hasMany(CartContent::class, 'idCart');
+    return $this->hasMany(CartContent::class, 'cart_id');
   }
 }

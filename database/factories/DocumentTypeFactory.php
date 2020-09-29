@@ -24,7 +24,7 @@ class DocumentTypeFactory extends Factory
   {
     return [
       'abbreviation' => $this->faker->unique()->word(), // 'b',
-      'documentDescription' => $this->faker->paragraph(1),
+      'description' => $this->faker->paragraph(1),
     ];
   }
 }

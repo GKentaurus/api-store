@@ -13,8 +13,8 @@ class CartContent extends Model
 
   protected $table = "cart_contents";
   protected $fillable = [
-    'idCart',
-    'idProduct',
+    'cart_id',
+    'product_id',
     'quantity',
     'price'
   ];

@@ -28,7 +28,7 @@ class DocumentTypeController extends ApiController
   {
     $rules = [
       'abbreviation' => 'required|min:3|max:100',
-      'documentDescription' => 'min:3|max:100',
+      'description' => 'min:3|max:100',
     ];
     $this->validate($request, $rules);
     $form = $request->all();

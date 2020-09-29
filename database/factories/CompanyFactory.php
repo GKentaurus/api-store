@@ -23,7 +23,7 @@ class CompanyFactory extends Factory
   public function definition()
   {
     return [
-      'idUser' => $this->faker->numberBetween(1, config('app.seedUserTable', 4)),
+      'user_id' => $this->faker->numberBetween(1, config('app.seedUserTable', 4)),
       'companyName' => $this->faker->name,
       'documentType' => $this->faker->numberBetween(1, config('app.seedDocumentTypeTable', 4)),
       'documentNumber' => $this->faker->numberBetween(1000000, 1199999999),

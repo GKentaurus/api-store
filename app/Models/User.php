@@ -31,7 +31,7 @@ class User extends Authenticatable
     'sendEmails',
     'password',
     'termsAndConditions',
-    'category',
+    'user_category_id',
     'isAdmin',
   ];
 

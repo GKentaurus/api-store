@@ -11,11 +11,11 @@ class Price extends Model
 {
   use HasFactory, Notifiable, SoftDeletes;
 
-  protected $table = 'prices';
+  protected $table = 'price_list_product';
 
   protected $fillable = [
-    'idProduct',
-    'idPriceList',
+    'product_id',
+    'price_list_id',
     'price'
   ];
 

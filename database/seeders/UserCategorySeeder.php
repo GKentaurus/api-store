@@ -17,8 +17,8 @@ class UserCategorySeeder extends Seeder
     $categories = ['General', 'Clientes recurrentes', 'Clientes especiales', 'VIP'];
     for ($i = 0; $i < count($categories); $i++) {
       UserCategory::factory()->create([
-        'categoryName' => $categories[$i],
-        'idPriceList' => $i + 1,
+        'name' => $categories[$i],
+        'price_list_id' => $i + 1,
         'active' => 1,
       ]);
     }

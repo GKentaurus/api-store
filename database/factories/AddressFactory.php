@@ -23,7 +23,7 @@ class AddressFactory extends Factory
   public function definition()
   {
     return [
-      'idCompany' => $this->faker->numberBetween(1, config('app.seedCompanyTable'), 4),
+      'company_id' => $this->faker->numberBetween(1, config('app.seedCompanyTable'), 4),
       'addressName' => $this->faker->paragraph(2),
       'addressLine1' => $this->faker->address,
       'addressLine2' => $this->faker->secondaryAddress,

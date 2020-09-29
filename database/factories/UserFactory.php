@@ -31,7 +31,7 @@ class UserFactory extends Factory
       'sendEmails' => $this->faker->boolean(70),
       'password' => bcrypt($this->faker->password($min = 8, $max = 20)),
       'termsAndConditions' => 1,
-      'category' => $this->faker->numberBetween($min = 1, $max = 5),
+      'user_category_id' => $this->faker->numberBetween($min = 1, $max = 5),
       'isAdmin' => 0,
     ];
   }

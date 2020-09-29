@@ -166,7 +166,7 @@ class CompanyController extends ApiController
   {
     if (Gate::allows('isAdmin')) {
       $rules = [
-        'idUser' => 'required',
+        'user_id' => 'required',
         'companyName' => 'required',
         'documentType' => 'required',
         'documentNumber' => 'required',
@@ -176,7 +176,7 @@ class CompanyController extends ApiController
       $this->validate($request, $rules);
 
       $form = $request->only(
-        'idUser',
+        'user_id',
         'companyName',
         'documentType',
         'documentNumber',

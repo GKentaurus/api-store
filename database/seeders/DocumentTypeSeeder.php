@@ -24,7 +24,7 @@ class DocumentTypeSeeder extends Seeder
     for ($i = 0; $i < count($abbreviation); $i++) {
       DocumentType::factory()->create([
         'abbreviation' => $abbreviation[$i],
-        'documentDescription' => $documentDescription[$i],
+        'description' => $documentDescription[$i],
       ]);
     }
 

@@ -14,18 +14,16 @@ class CreateProductsTable extends Migration
    */
   public function up()
   {
-    if (!Schema::hasTable('products') || Config::get('app.dropProducts', true)) {
-      Schema::create('products', function (Blueprint $table) {
-        $table->id();
-        $table->string('model')->unique();
-        $table->string('description');
-        $table->string('barcode')->unique();
-        $table->integer('quantity');
-        $table->tinyInteger('active');
-        $table->timestamps();
-        $table->softDeletes();
-      });
-    }
+    Schema::create('products', function (Blueprint $table) {
+      $table->id();
+      $table->string('model')->unique();
+      $table->string('description');
+      $table->string('barcode')->unique();
+      $table->integer('quantity');
+      $table->tinyInteger('active');
+      $table->timestamps();
+      $table->softDeletes();
+    });
   }
 
   /**
@@ -35,8 +33,6 @@ class CreateProductsTable extends Migration
    */
   public function down()
   {
-    if (Config::get('app.dropProducts', false)) {
-      Schema::dropIfExists('products');
-    }
+    Schema::dropIfExists('products');
   }
 }

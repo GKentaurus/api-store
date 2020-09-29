@@ -23,9 +23,9 @@ class OrderFactory extends Factory
   public function definition()
   {
     return [
-      'idCart' => $this->faker->numberBetween(1, config('app.seedOrderTable', 4)),
-      'idOrderStatus' => $this->faker->numberBetween(1, config('app.seedOrderStatusTable', 7)),
-      'idPaymentMethod' => $this->faker->numberBetween(1, config('app.seedPaymentMethodTable', 4)),
+      'cart_id' => $this->faker->numberBetween(1, config('app.seedOrderTable', 4)),
+      'order_status_id' => $this->faker->numberBetween(1, config('app.seedOrderStatusTable', 7)),
+      'payment_method_id' => $this->faker->numberBetween(1, config('app.seedPaymentMethodTable', 4)),
     ];
   }
 }

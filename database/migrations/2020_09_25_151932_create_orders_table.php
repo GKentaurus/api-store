@@ -15,9 +15,9 @@ class CreateOrdersTable extends Migration
   {
     Schema::create('orders', function (Blueprint $table) {
       $table->id();
-      $table->foreignId('idCart')->constrained('carts')->cascadeOnDelete();
-      $table->foreignId('idOrderStatus')->constrained('order_statuses');
-      $table->foreignId('idPaymentMethod')->constrained('payment_methods');
+      $table->foreignId('cart_id')->constrained('carts')->cascadeOnDelete();
+      $table->foreignId('order_status_id')->constrained('order_statuses');
+      $table->foreignId('payment_method_id')->constrained('payment_methods');
       $table->timestamps();
       $table->softDeletes();
     });

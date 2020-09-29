@@ -21,7 +21,7 @@ class DocumentType extends Model
 
   protected $fillable = [
     'abbreviation',
-    'documentDescription',
+    'description',
   ];
 
   /**

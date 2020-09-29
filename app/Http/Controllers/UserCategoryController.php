@@ -26,8 +26,8 @@ class UserCategoryController extends ApiController
   public function store(Request $request)
   {
     $rules = [
-      'categoryName' => 'required|min:3',
-      'idPriceList' => 'required',
+      'name' => 'required|min:3',
+      'price_list_id' => 'required',
       'active' => 'required',
     ];
 

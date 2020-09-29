@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
-use App\Models\CartContent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -20,7 +19,7 @@ class CartController extends ApiController
     $user = auth('api')->user()->id;
 
     $cart = Cart::all()
-      ->where('idUser', $user)
+      ->where('user_id', $user)
       ->where('active', 1)
       ->sortByDesc('updated_at')
       ->first();

@@ -14,8 +14,8 @@ class UserCategory extends Model
   protected $table = 'user_categories';
 
   protected $fillable = [
-    'categoryName',
-    'idPriceList',
+    'name',
+    'price_list_id',
     'active'
   ];
 

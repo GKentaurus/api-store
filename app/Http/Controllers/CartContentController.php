@@ -26,8 +26,8 @@ class CartContentController extends ApiController
   public function store(Request $request)
   {
     $rules = [
-      'idCart' => 'required',
-      'idProduct' => 'required',
+      'cart_id' => 'required',
+      'product_id' => 'required',
       'quantity' => 'required',
       'price' => 'required',
     ];

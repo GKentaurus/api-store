@@ -170,7 +170,7 @@ class AddressController extends ApiController
   {
     if (Gate::allows('isAdmin')) {
       $rules = [
-        'idCompany' => 'required',
+        'company_id' => 'required',
         'addressName' => 'required|min:3',
         'addressLine1' => 'required|min:7',
         'city' => 'required',

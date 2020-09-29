@@ -13,7 +13,7 @@ class ProductController extends ApiController
 {
   // SECTION User methods
   /**
-   * ANCHOR Display all carts.
+   * ANCHOR Display all products.
    *
    * @return \App\Traits\ApiResponse
    */

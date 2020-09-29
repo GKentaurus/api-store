@@ -24,7 +24,7 @@ class UserSeeder extends Seeder
         'sendEmails' => 1,
         'password' => bcrypt('123456'),
         'termsAndConditions' => 1,
-        'category' => 1,
+        'user_category_id' => 1,
         'isAdmin' => 1,
       ],
       [
@@ -36,7 +36,7 @@ class UserSeeder extends Seeder
         'sendEmails' => 1,
         'password' => bcrypt('456789'),
         'termsAndConditions' => 1,
-        'category' => 2,
+        'user_category_id' => 2,
         'isAdmin' => 0,
       ],
       [
@@ -48,7 +48,7 @@ class UserSeeder extends Seeder
         'sendEmails' => 1,
         'password' => bcrypt('789123'),
         'termsAndConditions' => 1,
-        'category' => 3,
+        'user_category_id' => 3,
         'isAdmin' => 0,
       ],
       [
@@ -60,7 +60,7 @@ class UserSeeder extends Seeder
         'sendEmails' => 1,
         'password' => bcrypt('123789'),
         'termsAndConditions' => 1,
-        'category' => 4,
+        'user_category_id' => 4,
         'isAdmin' => 0,
       ],
     ];
