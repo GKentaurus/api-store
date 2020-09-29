@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cart;
+use App\Models\CartContent;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 
@@ -14,22 +15,45 @@ class CartController extends ApiController
    *
    * @return \App\Traits\ApiResponse
    */
-  public function showLastestCart()
+  public function showUserCart()
   {
     $user = auth('api')->user()->id;
 
-    $cart = Cart::all()
-      ->where('user_id', $user)
-      ->where('active', 1)
-      ->sortByDesc('updated_at')
-      ->first();
+    $cart = Cart::firstOrCreate([
+      'user_id' => $user,
+      'active' => 1
+    ]);
 
     $total = 0;
+
     foreach ($cart->cartContent as $product) {
       $total += $product->quantity * $product->price;
     }
 
     $cart['total'] = $total;
+
+    return $this->showOne($cart);
+  }
+
+  /**
+   * ANCHOR Display the lastest cart for the user.
+   *
+   * @return \App\Traits\ApiResponse
+   */
+  public function clearUserCart()
+  {
+    $user = auth('api')->user()->id;
+
+    $cart = Cart::firstOrCreate([
+      'user_id' => $user,
+      'active' => 1
+    ]);
+
+    foreach ($cart->cartContent as $product) {
+      CartContent::destroy($product->id);
+    }
+
+    $cart['total'] = 0;
 
     return $this->showOne($cart);
   }
@@ -67,7 +91,7 @@ class CartController extends ApiController
    *
    * @return \App\Traits\ApiResponse
    */
-  public function showSpecificCartsByAdmin($id)
+  public function showCartByAdmin($id)
   {
     if (Gate::allows('isAdmin')) {
       $cart = Cart::findOrFail($id);

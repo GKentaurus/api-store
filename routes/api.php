@@ -68,12 +68,17 @@ Route::middleware('auth:api')->group(function () {
      * ANCHOR CART routes
      */
     Route::get('carts', [CartController::class, 'showAllCartsByAdmin']);
-    Route::get('carts/{idCart}', [CartController::class, 'showSpecificCartsByAdmin']);
+    Route::get('carts/{idCart}', [CartController::class, 'showCartByAdmin']);
+    Route::get('carts/{idCart}/clear', [CartController::class, 'showCartByAdmin']);
 
     /**
      * ANCHOR PRODUCT routes
      */
-    Route::get('products', [ProductController::class, 'showAllProducts']);
+    Route::get('products', [ProductController::class, 'showAllProductsByAdmin']);
+    Route::get('products/{id}', [ProductController::class, 'showProductByAdmin']);
+    Route::post('products', [ProductController::class, 'storeProductByAdmin']);
+    Route::put('products/{id}', [ProductController::class, 'updateProductByAdmin']);
+    Route::delete('products/{id}', [ProductController::class, 'destroyProductByAdmin']);
   });
   // !SECTION End Admin routes
 
@@ -108,7 +113,16 @@ Route::middleware('auth:api')->group(function () {
     /**
      * ANCHOR CART routes
      */
-    Route::get('cart', [CartController::class, 'showLastestCart']);
+    Route::get('cart', [CartController::class, 'showUserCart']);
+    Route::delete('cart', [CartController::class, 'clearUserCart']);
+
+    /**
+     * ANCHOR PRODUCT routes
+     */
+    Route::get('products', [ProductController::class, 'showAllProducts']);
+    Route::get('products/{id}', [ProductController::class, 'showSpecificProduct']);
+    Route::put('products/{id}/add', [ProductController::class, 'addProductToCart']);
+    Route::put('products/{id}/sub', [ProductController::class, 'substractProductToCart']);
   });
   // !SECTION End Customer (users) routes
 });
