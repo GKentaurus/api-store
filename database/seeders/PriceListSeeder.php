@@ -14,7 +14,7 @@ class PriceListSeeder extends Seeder
    */
   public function run()
   {
-    $listName = ['General', 'Clientes recurrentes', 'Clientes especiales', 'VIP'];
+    $listName = ['Precios General', 'Precios Clientes recurrentes', 'Precios Clientes especiales', 'Precios VIP'];
     for ($i = 0; $i < count($listName); $i++) {
       PriceList::factory()->create([
         'listName' => $listName[$i],

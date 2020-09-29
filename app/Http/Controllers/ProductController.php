@@ -19,10 +19,9 @@ class ProductController extends ApiController
    */
   public function showAllProducts()
   {
-    $userCategory = auth('api')->user()->category;
-    $priceList = UserCategory::findOrFail($userCategory)->idPriceList;
-
-    $products = Product::all();
+    $userCategory = auth('api')->user()->user_category_id;
+    $priceList = UserCategory::all()->find($userCategory)->price_list_id;
+    $products = PriceList::find($priceList)->products;
 
     return $products;
   }

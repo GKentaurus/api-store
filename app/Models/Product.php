@@ -25,8 +25,8 @@ class Product extends Model
 
   protected $casts = [];
 
-  public function prices()
+  public function pricesList()
   {
-    return $this->hasMany(Price::class, 'idProduct');
+    return $this->belongsToMany(PriceList::class, 'price_list_product', 'product_id', 'price_list_id')->withPivot('price');
   }
 }

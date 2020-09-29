@@ -22,9 +22,4 @@ class Price extends Model
   protected $hidden = [];
 
   protected $casts = [];
-
-  public function priceList()
-  {
-    return $this->belongsTo(PriceList::class, 'id');
-  }
 }
