@@ -40,12 +40,12 @@ class DatabaseSeeder extends Seeder
       UserSeeder::class,
       CompanySeeder::class,
       AddressSeeder::class,
-      CartSeeder::class,
-      CartContentSeeder::class,
+      // CartSeeder::class,
+      // CartContentSeeder::class,
       ProductCategorySeeder::class,
-      OrderStatusSeeder::class,
-      PaymentMethodSeeder::class,
-      OrderSeeder::class,
+      // OrderStatusSeeder::class,
+      // PaymentMethodSeeder::class,
+      // OrderSeeder::class,
     ]);
   }
 }
