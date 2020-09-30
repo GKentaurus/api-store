@@ -1,18 +1,13 @@
 <?php
 
-use App\Http\Controllers\AddressController;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CartContentController;
-use App\Http\Controllers\CartController;
-use App\Http\Controllers\CompanyController;
-use App\Http\Controllers\DocumentTypeController;
-use App\Http\Controllers\PriceController;
-use App\Http\Controllers\PriceListController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\TestController;
-use App\Http\Controllers\UserCategoryController;
-use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CartController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\OrderController;
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\ProductController;
 
 /*
 |--------------------------------------------------------------------------
@@ -69,7 +64,7 @@ Route::middleware('auth:api')->group(function () {
      */
     Route::get('carts', [CartController::class, 'showAllCartsByAdmin']);
     Route::get('carts/{idCart}', [CartController::class, 'showCartByAdmin']);
-    Route::get('carts/{idCart}/clear', [CartController::class, 'showCartByAdmin']);
+    Route::delete('carts/{idCart}/clear', [CartController::class, 'showCartByAdmin']);
 
     /**
      * ANCHOR PRODUCT routes
@@ -79,6 +74,11 @@ Route::middleware('auth:api')->group(function () {
     Route::post('products', [ProductController::class, 'storeProductByAdmin']);
     Route::put('products/{id}', [ProductController::class, 'updateProductByAdmin']);
     Route::delete('products/{id}', [ProductController::class, 'destroyProductByAdmin']);
+
+    /**
+     * ANCHOR ORDER routes
+     */
+    Route::get('orders', [OrderController::class, 'showAllOrders']);
   });
   // !SECTION End Admin routes
 
@@ -123,6 +123,12 @@ Route::middleware('auth:api')->group(function () {
     Route::get('products/{id}', [ProductController::class, 'showSpecificProduct']);
     Route::put('products/{id}/add', [ProductController::class, 'addProductToCart']);
     Route::put('products/{id}/sub', [ProductController::class, 'substractProductToCart']);
+
+    /**
+     * ANCHOR ORDER routes
+     */
+    Route::post('orders', [OrderController::class, 'createOrder']);
+    Route::delete('orders', [OrderController::class, 'cancelOrder']);
   });
   // !SECTION End Customer (users) routes
 });
