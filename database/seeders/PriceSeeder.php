@@ -28,7 +28,7 @@ class PriceSeeder extends Seeder
     /**
      * Setup the price factory on config\app.php
      */
-    $qty = config('app.seedPriceTable', 4) - config('aap.seedPriceListTable', 4);
+    $qty = config('seeder.seedPriceTable', 4) - config('aap.seedPriceListTable', 4);
     $qty = $qty <= 0 ?  0 : $qty;
     if ($qty > 0) {
       Price::factory()->times($qty)->create();

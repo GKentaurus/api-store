@@ -17,6 +17,6 @@ class ProductCategorySeeder extends Seeder
     /**
      * Setup the product cetegory factory on config\app.php
      */
-    ProductCategory::factory()->times(config('app.seedProductCategoryTable', 5))->create();
+    ProductCategory::factory()->times(config('seeder.seedProductCategoryTable', 5))->create();
   }
 }

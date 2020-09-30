@@ -17,6 +17,6 @@ class OrderSeeder extends Seeder
     /**
      * Setup the order factory on config\app.php
      */
-    Order::factory()->times(config('app.seedOrderTable'))->create();
+    Order::factory()->times(config('seeder.seedOrderTable'))->create();
   }
 }

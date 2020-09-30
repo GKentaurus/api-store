@@ -24,7 +24,7 @@ class PriceListSeeder extends Seeder
     /**
      * Setup the price list factory on config\app.php
      */
-    $qty = config('app.seedPriceListTable', 4) - count($listName);
+    $qty = config('seeder.seedPriceListTable', 4) - count($listName);
     $qty = $qty <= 0 ?  0 : $qty;
     if ($qty > 0) {
       PriceList::factory()->times($qty)->create();

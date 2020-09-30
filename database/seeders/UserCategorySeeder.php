@@ -25,7 +25,7 @@ class UserCategorySeeder extends Seeder
     /**
      * Setup the user cetegory factory on config\app.php
      */
-    $qty = config('app.seedUserCategoryTable', 4) - count($categories);
+    $qty = config('seeder.seedUserCategoryTable', 4) - count($categories);
     $qty = $qty <= 0 ?  0 : $qty;
     if ($qty > 0) {
       UserCategory::factory()->times($qty)->create();

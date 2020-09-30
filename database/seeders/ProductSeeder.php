@@ -35,7 +35,7 @@ class ProductSeeder extends Seeder
     /**
      * Setup the product factory on config\app.php
      */
-    $qty = config('app.seedProductTable', 5) - count($model);
+    $qty = config('seeder.seedProductTable', 5) - count($model);
     $qty = $qty <= 0 ?  0 : $qty;
     if ($qty > 0) {
       Product::factory()->times($qty)->create();

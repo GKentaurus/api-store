@@ -71,7 +71,7 @@ class UserSeeder extends Seeder
     /**
      * Setup the user factory on config\app.php
      */
-    $qty = config('app.seedUserTable', 4) - count($users);
+    $qty = config('seeder.seedUserTable', 4) - count($users);
     $qty = $qty <= 0 ?  0 : $qty;
     if ($qty > 0) {
       User::factory()->times($qty)->create();

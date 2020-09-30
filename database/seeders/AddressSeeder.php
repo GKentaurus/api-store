@@ -17,6 +17,6 @@ class AddressSeeder extends Seeder
     /**
      * Setup the address factory on config\app.php
      */
-    Address::factory()->times(config('app.seedAddressTable'))->create();
+    Address::factory()->times(config('seeder.seedAddressTable'))->create();
   }
 }
