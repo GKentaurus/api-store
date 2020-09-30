@@ -15,7 +15,7 @@ class CreateUserCategoriesTable extends Migration
   public function up()
   {
     Schema::create('user_categories', function (Blueprint $table) {
-      $table->id();
+      $table->bigIncrements('id');
       $table->string('name')->require();
       $table->foreignId('price_list_id')->constrained('price_lists');
       $table->tinyInteger('active')->default(1)->require();

@@ -14,7 +14,7 @@ class CreatePaymentMethodsTable extends Migration
   public function up()
   {
     Schema::create('payment_methods', function (Blueprint $table) {
-      $table->id();
+      $table->bigIncrements('id');
       $table->integer('sortOrder')->require();
       $table->string('name')->require();
       $table->tinyInteger('active')->default(1)->require();

@@ -15,7 +15,7 @@ class CreatePriceListProductTable extends Migration
   public function up()
   {
     Schema::create('price_list_product', function (Blueprint $table) {
-      $table->id();
+      $table->bigIncrements('id');
       $table->double('price');
       $table->timestamps();
       $table->softDeletes();

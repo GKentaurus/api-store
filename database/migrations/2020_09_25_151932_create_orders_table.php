@@ -14,7 +14,7 @@ class CreateOrdersTable extends Migration
   public function up()
   {
     Schema::create('orders', function (Blueprint $table) {
-      $table->id();
+      $table->bigIncrements('id');
       $table->foreignId('cart_id')->constrained('carts')->cascadeOnDelete();
       $table->foreignId('order_status_id')->constrained('order_statuses');
       $table->foreignId('payment_method_id')->constrained('payment_methods');

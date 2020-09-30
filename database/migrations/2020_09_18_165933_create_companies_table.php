@@ -14,7 +14,7 @@ class CreateCompaniesTable extends Migration
   public function up()
   {
     Schema::create('companies', function (Blueprint $table) {
-      $table->id();
+      $table->bigIncrements('id');
       $table->foreignId('user_id')->constrained('users');
       $table->string('companyName')->require();
       $table->foreignId('documentType')->constrained('document_types');

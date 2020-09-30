@@ -15,7 +15,7 @@ class CreatePriceListsTable extends Migration
   public function up()
   {
     Schema::create('price_lists', function (Blueprint $table) {
-      $table->id();
+      $table->bigIncrements('id');
       $table->string('listName')->require()->unique();
       $table->timestamps();
       $table->softDeletes();

@@ -14,7 +14,7 @@ class CreateOrderStatusesTable extends Migration
   public function up()
   {
     Schema::create('order_statuses', function (Blueprint $table) {
-      $table->id();
+      $table->bigIncrements('id');
       $table->integer('sortOrder')->require();
       $table->string('name')->require();
       $table->tinyInteger('active')->default(1)->require();

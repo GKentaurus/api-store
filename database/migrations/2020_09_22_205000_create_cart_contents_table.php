@@ -15,7 +15,7 @@ class CreateCartContentsTable extends Migration
   public function up()
   {
     Schema::create('cart_contents', function (Blueprint $table) {
-      $table->id();
+      $table->bigIncrements('id');
       $table->foreignId('cart_id')->constrained('carts')->require();
       $table->foreignId('product_id')->constrained('products')->require();
       $table->integer('quantity')->require();
