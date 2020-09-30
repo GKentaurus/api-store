@@ -43,8 +43,8 @@ class DatabaseSeeder extends Seeder
       // CartSeeder::class,
       // CartContentSeeder::class,
       ProductCategorySeeder::class,
-      // OrderStatusSeeder::class,
-      // PaymentMethodSeeder::class,
+      OrderStatusSeeder::class,
+      PaymentMethodSeeder::class,
       // OrderSeeder::class,
     ]);
   }
