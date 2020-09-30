@@ -31,26 +31,26 @@ class ProductController extends ApiController
   /**
    * ANCHOR Display specific product.
    *
-   * @param string $id
+   * @param int $product_id
    * @return \App\Traits\ApiResponse
    */
-  public function showSpecificProduct($id)
+  public function showSpecificProduct($product_id)
   {
     $userCategory = auth('api')->user()->user_category_id;
     $priceList = UserCategory::all()->find($userCategory)->price_list_id;
     $products = PriceList::find($priceList)->products;
 
-    return $this->showOne($products->find($id));
+    return $this->showOne($products->find($product_id));
   }
 
   /**
    * ANCHOR Add product to user's cart.
    *
    * @param \Illuminate\Http\Request $request
-   * @param string $id
+   * @param int $product_id
    * @return \App\Traits\ApiResponse
    */
-  public function addProductToCart(Request $request, $id)
+  public function addProductToCart(Request $request, $product_id)
   {
     $rules = [
       'quantityToAdd' => 'required|min:1'
@@ -69,11 +69,11 @@ class ProductController extends ApiController
 
     $cartContent = CartContent::firstOrNew([
       'cart_id' => $cart->id,
-      'product_id' => $id,
+      'product_id' => $product_id,
     ]);
 
     $priceList = UserCategory::all()->find($user->user_category_id)->price_list_id;
-    $product = PriceList::find($priceList)->products->find($id);
+    $product = PriceList::find($priceList)->products->find($product_id);
 
     $cartContent->quantity += $qty;
     $cartContent->price = $product->pivot->price;
@@ -87,10 +87,10 @@ class ProductController extends ApiController
    * ANCHOR Substract product to user's cart.
    *
    * @param \Illuminate\Http\Request $request
-   * @param string $id
+   * @param int $product_id
    * @return \App\Traits\ApiResponse
    */
-  public function substractProductToCart(Request $request, $id)
+  public function substractProductToCart(Request $request, $product_id)
   {
     $rules = [
       'quantityToSubstract' => 'required|min:1'
@@ -109,7 +109,7 @@ class ProductController extends ApiController
 
     $cartContent = CartContent::all()
       ->where('cart_id', $cart->id)
-      ->where('product_id', $id)
+      ->where('product_id', $product_id)
       ->first();
 
     if (gettype($cartContent) != "NULL" && $cartContent->quantity > 0) {
@@ -186,13 +186,13 @@ class ProductController extends ApiController
   /**
    * ANCHOR Show a new product
    *
-   * @param string $id
+   * @param int $product_id
    * @return \App\Traits\ApiResponse
    */
-  public function showProductByAdmin($id)
+  public function showProductByAdmin($product_id)
   {
     if (Gate::allows('isAdmin')) {
-      $product = Product::findOrFail($id);
+      $product = Product::findOrFail($product_id);
       $product->priceLists;
       return $this->showOne($product);
     } else {
@@ -204,13 +204,13 @@ class ProductController extends ApiController
    * ANCHOR Show a new product
    *
    * @param \Illuminate\Http\Request $request
-   * @param string $id
+   * @param int $product_id
    * @return \App\Traits\ApiResponse
    */
-  public function updateProductByAdmin(Request $request, $id)
+  public function updateProductByAdmin(Request $request, $product_id)
   {
     if (Gate::allows('isAdmin')) {
-      $product = Product::findOrFail($id);
+      $product = Product::findOrFail($product_id);
       $product->fill($request->only([
         'model',
         'description',
@@ -230,14 +230,14 @@ class ProductController extends ApiController
   /**
    * ANCHOR Delete a new product
    *
-   * @param string $id
+   * @param int $product_id
    * @return \App\Traits\ApiResponse
    */
-  public function destroyProductByAdmin($id)
+  public function destroyProductByAdmin($product_id)
   {
     if (Gate::allows('isAdmin')) {
-      Product::destroy($id);
-      return $this->successResponse('El productco ' . $id . ' ha sido eliminado.', 201);
+      Product::destroy($product_id);
+      return $this->successResponse('El productco ' . $product_id . ' ha sido eliminado.', 201);
     } else {
       return $this->errorResponse('Acceso no autorizado', 403);
     }

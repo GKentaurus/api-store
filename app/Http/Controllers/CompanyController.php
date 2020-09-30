@@ -11,7 +11,6 @@ class CompanyController extends ApiController
 {
   // SECTION Normal methods
 
-
   /**
    * ANCHOR Show user companies
    * Display a companies collection from the current user.
@@ -31,9 +30,9 @@ class CompanyController extends ApiController
    * @param  string  $id
    * @return \App\Traits\ApiResponser
    */
-  public function showUserCompany($id)
+  public function showUserCompany($company_id)
   {
-    $company = User::find(auth('api')->user()->id)->companies()->where('id', $id)->first();
+    $company = User::find(auth('api')->user()->id)->companies()->where('id', $company_id)->first();
 
     if (gettype($company) == "NULL") {
       return $this->errorResponse('La compañía requerida no esta asociada a este usuario o no se encuentra', 403);
@@ -50,10 +49,10 @@ class CompanyController extends ApiController
    */
   public function storeUserCompany(Request $request)
   {
-    $idUser = auth('api')->user()->id;
+    $user_id = auth('api')->user()->id;
 
     $rules = [
-      'companyName' => 'required',
+      'name' => 'required',
       'documentType' => 'required',
       'documentNumber' => 'required',
       'billingEmail' => 'required',
@@ -62,13 +61,13 @@ class CompanyController extends ApiController
     $this->validate($request, $rules);
 
     $form = $request->only(
-      'companyName',
+      'name',
       'documentType',
       'documentNumber',
       'billingEmail',
     );
 
-    $form['idUser'] = $idUser;
+    $form['user_id'] = $user_id;
     $serie = [71, 67, 59, 53, 47, 43, 41, 37, 29, 23, 19, 17, 13, 7, 3, 0];
     $document = $request['documentNumber'];
     $serie = array_reverse($serie);
@@ -100,7 +99,7 @@ class CompanyController extends ApiController
     $company = User::find(auth('api')->user()->id)->companies()->where('id', $id)->first();
 
     $company->fill($request->only([
-      'companyName',
+      'name',
       'documentType',
       'documentNumber',
       'billingEmail',
@@ -134,7 +133,7 @@ class CompanyController extends ApiController
    *
    * @return \App\Traits\ApiResponser
    */
-  public function showAllCompanies()
+  public function showAllCompaniesByAdmin()
   {
     if (Gate::allows('isAdmin')) {
       return $this->showAll(Company::all());
@@ -167,7 +166,7 @@ class CompanyController extends ApiController
     if (Gate::allows('isAdmin')) {
       $rules = [
         'user_id' => 'required',
-        'companyName' => 'required',
+        'name' => 'required',
         'documentType' => 'required',
         'documentNumber' => 'required',
         'billingEmail' => 'required',
@@ -177,7 +176,7 @@ class CompanyController extends ApiController
 
       $form = $request->only(
         'user_id',
-        'companyName',
+        'name',
         'documentType',
         'documentNumber',
         'billingEmail',
@@ -214,7 +213,7 @@ class CompanyController extends ApiController
     $company = Company::findOrFail($id);
 
     $company->fill($request->only([
-      'companyName',
+      'name',
       'documentType',
       'documentNumber',
       'billingEmail',

@@ -24,7 +24,7 @@ class CompanyFactory extends Factory
   {
     return [
       'user_id' => $this->faker->numberBetween(1, config('app.seedUserTable', 4)),
-      'companyName' => $this->faker->name,
+      'name' => $this->faker->name,
       'documentType' => $this->faker->numberBetween(1, config('app.seedDocumentTypeTable', 4)),
       'documentNumber' => $this->faker->numberBetween(1000000, 1199999999),
       'verificationDigit' => $this->faker->numberBetween(0, 9),

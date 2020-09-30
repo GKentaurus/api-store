@@ -3,82 +3,111 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\PaymentMethod;
+use Illuminate\Support\Facades\Gate;
 
-class PaymentMethodController extends Controller
+class PaymentMethodController extends ApiController
 {
+  // SECTION Admin methods
   /**
-   * Display a listing of the resource.
+   * ANCHOR Show all payment method
    *
-   * @return \Illuminate\Http\Response
+   * @return \App\Traits\ApiResponse
    */
-  public function index()
+  public function showAllPaymentMethodsByAdmin()
   {
-    //
+    if (Gate::allows('isAdmin')) {
+      return $this->showAll(PaymentMethod::all());
+    } else {
+      return $this->errorResponse(config('message.errors.unauthorized'), 403);
+    }
   }
 
   /**
-   * Show the form for creating a new resource.
+   * ANCHOR Show specific payment method
    *
-   * @return \Illuminate\Http\Response
+   * @param  int $payment_method_id
+   * @return \App\Traits\ApiResponse
    */
-  public function create()
+  public function showPaymentMethodByAdmin($payment_method_id)
   {
-    //
+    if (Gate::allows('isAdmin')) {
+      return $this->showOne(PaymentMethod::findOrFail($payment_method_id));
+    } else {
+      return $this->errorResponse(config('message.errors.unauthorized'), 403);
+    }
   }
 
   /**
-   * Store a newly created resource in storage.
+   * ANCHOR Create an store a new payment method
    *
    * @param  \Illuminate\Http\Request  $request
-   * @return \Illuminate\Http\Response
+   * @return \App\Traits\ApiResponse
    */
-  public function store(Request $request)
+  public function storePaymentMethodByAdmin(Request $request)
   {
-    //
+    if (Gate::allows('isAdmin')) {
+      $rules = [
+        'sortOrder' => 'required|numeric',
+        'name' => 'required|min:3',
+        'active' => 'required',
+      ];
+
+      $this->validate($request, $rules);
+
+      $form = $request->only([
+        'sortOrder',
+        'name',
+        'active',
+      ]);
+
+      $paymentMethod = PaymentMethod::create($form);
+
+      return $this->showOne($paymentMethod);
+    } else {
+      return $this->errorResponse(config('message.errors.unauthorized'), 403);
+    }
   }
 
   /**
-   * Display the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function show($id)
-  {
-    //
-  }
-
-  /**
-   * Show the form for editing the specified resource.
-   *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
-   */
-  public function edit($id)
-  {
-    //
-  }
-
-  /**
-   * Update the specified resource in storage.
+   * ANCHOR Update a specific payment method
    *
    * @param  \Illuminate\Http\Request  $request
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
+   * @param  int $payment_method_id
+   * @return \App\Traits\ApiResponse
    */
-  public function update(Request $request, $id)
+  public function updatePaymentMethodByAdmin(Request $request, $payment_method_id)
   {
-    //
+    if (Gate::allows('isAdmin')) {
+      $paymentMethod = PaymentMethod::finOrFail($payment_method_id);
+      $paymentMethod->fill($request->only([
+        'sortOrder',
+        'name',
+        'active',
+      ]));
+
+      $paymentMethod->save();
+
+      return $this->showOne($paymentMethod);
+    } else {
+      return $this->errorResponse(config('message.errors.unauthorized'), 403);
+    }
   }
 
   /**
-   * Remove the specified resource from storage.
+   * ANCHOR Delete a specific payment method
    *
-   * @param  int  $id
-   * @return \Illuminate\Http\Response
+   * @param  int $payment_method_id
+   * @return \App\Traits\ApiResponse
    */
-  public function destroy($id)
+  public function destroyPaymentMethodByAdmin($payment_method_id)
   {
-    //
+    if (Gate::allows('isAdmin')) {
+      PaymentMethod::destroy($payment_method_id);
+      return $this->successResponse(config('message.actions.delete'), 200);
+    } else {
+      return $this->errorResponse(config('message.errors.unauthorized'), 403);
+    }
   }
+  // !SECTION End Action methods
 }

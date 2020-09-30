@@ -16,7 +16,7 @@ class CreateCompaniesTable extends Migration
     Schema::create('companies', function (Blueprint $table) {
       $table->bigIncrements('id');
       $table->foreignId('user_id')->constrained('users');
-      $table->string('companyName')->require();
+      $table->string('name')->require();
       $table->foreignId('documentType')->constrained('document_types');
       $table->string('documentNumber')->require();
       $table->string('verificationDigit')->require();

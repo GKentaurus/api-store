@@ -89,12 +89,13 @@ class CartController extends ApiController
   /**
    * ANCHOR Display a specific carts.
    *
+   * @param  int $cart_id
    * @return \App\Traits\ApiResponse
    */
-  public function showCartByAdmin($id)
+  public function showCartByAdmin($cart_id)
   {
     if (Gate::allows('isAdmin')) {
-      $cart = Cart::findOrFail($id);
+      $cart = Cart::findOrFail($cart_id);
       $total = 0;
       foreach ($cart->cartContent as $product) {
         $total += $product->quantity * $product->price;

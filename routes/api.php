@@ -7,7 +7,11 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\CompanyController;
+use App\Http\Controllers\DocumentTypeController;
+use App\Http\Controllers\OrderStatusController;
+use App\Http\Controllers\PaymentMethodController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\UserCategoryController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,18 +37,36 @@ Route::middleware('auth:api')->group(function () {
   // SECTION Admin routes
   Route::prefix('admin')->group(function () {
     /**
+     * ANCHOR DOCUMENT TYPES routes
+     */
+    Route::get('document-types', [DocumentTypeController::class, 'showAllDocumentTypesByAdmin']);
+    Route::get('document-types/{id}', [DocumentTypeController::class, 'showDocumentTypeByAdmin']);
+    Route::post('document-types', [DocumentTypeController::class, 'storeDocumentTypeByAdmin']);
+    Route::put('document-types/{id}', [DocumentTypeController::class, 'updateDocumentTypeByAdmin']);
+    Route::delete('document-types/{id}', [DocumentTypeController::class, 'destroyDocumentTypeByAdmin']);
+
+    /**
      * ANCHOR USER routes
      */
-    Route::get('users', [UserController::class, 'showAllUsers']);
+    Route::get('users', [UserController::class, 'showAllUsersByAdmin']);
     Route::get('users/{id}', [UserController::class, 'showUserByAdmin']);
-    Route::post('users/', [UserController::class, 'storeUserByAdmin']);
+    Route::post('users', [UserController::class, 'storeUserByAdmin']);
     Route::put('users/{id}', [UserController::class, 'updateUserByAdmin']);
     Route::delete('users/{id}', [UserController::class, 'deleteUserByAdmin']);
 
     /**
+     * ANCHOR USER CATEGORY routes
+     */
+    Route::get('user-categories', [UserCategoryController::class, 'showAllUserCategoriesByAdmin']);
+    Route::get('user-categories/{id}', [UserCategoryController::class, 'showUserCategoryByAdmin']);
+    Route::post('user-categories', [UserCategoryController::class, 'storeUserCategoryByAdmin']);
+    Route::put('user-categories/{id}', [UserCategoryController::class, 'updateUserCategoryByAdmin']);
+    Route::delete('user-categories/{id}', [UserCategoryController::class, 'destroyUserCategoryByAdmin']);
+
+    /**
      * ANCHOR COMPANY routes
      */
-    Route::get('companies', [CompanyController::class, 'showAllCompanies']);
+    Route::get('companies', [CompanyController::class, 'showAllCompaniesByAdmin']);
     Route::get('companies/{id}', [CompanyController::class, 'showCompanyByAdmin']);
     Route::post('companies', [CompanyController::class, 'storeCompanyByAdmin']);
     Route::put('companies/{id}', [CompanyController::class, 'updateCompanyByAdmin']);
@@ -53,7 +75,7 @@ Route::middleware('auth:api')->group(function () {
     /**
      * ANCHOR ADDRESS routes
      */
-    Route::get('addresses', [AddressController::class, 'showAllAddresses']);
+    Route::get('addresses', [AddressController::class, 'showAllAddressesByAdmin']);
     Route::get('addresses/{id}', [AddressController::class, 'showAddressByAdmin']);
     Route::post('addresses', [AddressController::class, 'storeAddressByAdmin']);
     Route::put('addresses/{id}', [AddressController::class, 'updateAddressByAdmin']);
@@ -79,6 +101,24 @@ Route::middleware('auth:api')->group(function () {
      * ANCHOR ORDER routes
      */
     Route::get('orders', [OrderController::class, 'showAllOrders']);
+
+    /**
+     * ANCHOR ORDER STATUS routes
+     */
+    Route::get('order-statuses', [OrderStatusController::class, 'showAllOrderStatusesByAdmin']);
+    Route::get('order-statuses/{id}', [OrderStatusController::class, 'showOrderStatusByAdmin']);
+    Route::post('order-statuses', [OrderStatusController::class, 'storeOrderStatusByAdmin']);
+    Route::put('order-statuses/{id}', [OrderStatusController::class, 'updateOrderStatusByAdmin']);
+    Route::delete('order-statuses/{id}', [OrderStatusController::class, 'destroyOrderStatusByAdmin']);
+
+    /**
+     * ANCHOR PAYMENT METHOD routes
+     */
+    Route::get('payment-methods', [PaymentMethodController::class, 'showAllPaymentMethodsByAdmin']);
+    Route::get('payment-methods/{id}', [PaymentMethodController::class, 'showPaymentMethodByAdmin']);
+    Route::post('payment-methods', [PaymentMethodController::class, 'storePaymentMethodByAdmin']);
+    Route::put('payment-methods/{id}', [PaymentMethodController::class, 'updatePaymentMethodByAdmin']);
+    Route::delete('payment-methods/{id}', [PaymentMethodController::class, 'destroyPaymentMethodByAdmin']);
   });
   // !SECTION End Admin routes
 
@@ -99,16 +139,16 @@ Route::middleware('auth:api')->group(function () {
     Route::get('companies/{id}', [CompanyController::class, 'showUserCompany']);
     Route::post('companies', [CompanyController::class, 'storeUserCompany']);
     Route::put('companies/{id}', [CompanyController::class, 'updateUserCompany']);
-    Route::delete('companies/{id}', [CompanyController::class, 'deleteUserCompany']);
+    Route::delete('companies/{id}', [CompanyController::class, 'destroyUserCompany']);
 
     /**
      * ANCHOR ADDRESS routes
      */
-    Route::get('companies/{idCompany}/addresses', [AddressController::class, 'showAllCompaniesAddresses']);
-    Route::get('companies/{idCompany}/addresses/{idAddress}', [AddressController::class, 'showCompanyAddress']);
-    Route::post('companies/{idCompany}/addresses', [AddressController::class, 'storeCompanyAddress']);
-    Route::put('companies/{idCompany}/addresses/{idAddress}', [AddressController::class, 'updateCompanyAddress']);
-    Route::delete('companies/{idCompany}/addresses/{idAddress}', [AddressController::class, 'deleteCompanyAddress']);
+    Route::get('companies/{company_id}/addresses', [AddressController::class, 'showAllCompanyAddresses']);
+    Route::get('companies/{company_id}/addresses/{idAddress}', [AddressController::class, 'showCompanyAddress']);
+    Route::post('companies/{company_id}/addresses', [AddressController::class, 'storeCompanyAddress']);
+    Route::put('companies/{company_id}/addresses/{idAddress}', [AddressController::class, 'updateCompanyAddress']);
+    Route::delete('companies/{company_id}/addresses/{idAddress}', [AddressController::class, 'destroyCompanyAddress']);
 
     /**
      * ANCHOR CART routes

@@ -80,10 +80,12 @@ class UserController extends ApiController
    *
    * @return \App\Traits\ApiResponser
    */
-  public function showAllUsers()
+  public function showAllUsersByAdmin()
   {
     if (Gate::allows('isAdmin')) {
       return $this->showAll(User::all());
+    } else {
+      return $this->errorResponse('No tiene permisos para ejecutar esta tarea', 403);
     }
   }
 
@@ -133,7 +135,9 @@ class UserController extends ApiController
         'email',
         'sendEmails',
         'password',
-        'termsAndConditions'
+        'termsAndConditions',
+        'user_category_id',
+        'isAdmin'
       ]);
       $form['password'] = bcrypt($request->password);
       $user = User::create($form);
@@ -192,6 +196,8 @@ class UserController extends ApiController
     if (Gate::allows('isAdmin')) {
       User::destroy($id);
       return $this->successResponse('El usuario ' . $id . ' ha sido destruido', 201);
+    } else {
+      return $this->errorResponse('No tiene permisos para ejecutar esta tarea', 403);
     }
   }
 
