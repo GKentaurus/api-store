@@ -2,83 +2,71 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cart;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
-class OrderController extends Controller
+class OrderController extends ApiController
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
-    {
-        //
-    }
+  // SECTION User methods
+  /**
+   * ANCHOR Create a new order from the current cart.
+   *
+   * @return \App\Traits\ApiResponse
+   */
+  public function createOrder()
+  {
+    $user = auth('api')->user()->id;
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    $cart = Cart::firstOrCreate([
+      'user_id' => $user,
+      'active' => 1
+    ]);
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
+    $order = Order::firstOrCreate([
+      'cart_id' => $cart->id,
+      'order_status_id' => 1,
+      'payment_method_id' => 1
+    ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+    $order->cart;
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
+    return $this->showOne($order);
+  }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
+  /**
+   * ANCHOR Create a new order from the current cart.
+   *
+   * @return \App\Traits\ApiResponse
+   */
+  public function cancelOrder()
+  {
+    $user = auth('api')->user()->id;
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+    $cart = Cart::firstOrCreate([
+      'user_id' => $user,
+      'active' => 1
+    ]);
+
+    Order::where([
+      'cart_id' => $cart->id,
+      'order_status_id' => 1,
+      'payment_method_id' => 1
+    ])->delete();
+
+    return $this->successResponse('La orden ha sido eliminada', 200);
+  }
+  // !SECTION End User methods
+
+  // SECTION Admin methods
+  /**
+   * ANCHOR Get all orders
+   *
+   * @return \App\Traits\ApiResponser
+   */
+  public function showAllOrders()
+  {
+    return $this->showAll(Order::all());
+  }
+  // !SECTION End Admin methods
 }
