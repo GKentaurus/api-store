@@ -23,9 +23,9 @@ class CompanyFactory extends Factory
   public function definition()
   {
     return [
-      'user_id' => $this->faker->numberBetween(1, config('app.seedUserTable', 4)),
+      'user_id' => $this->faker->numberBetween(1, config('seeder.userTable', 4)),
       'name' => $this->faker->name,
-      'documentType' => $this->faker->numberBetween(1, config('app.seedDocumentTypeTable', 4)),
+      'documentType' => $this->faker->numberBetween(1, config('seeder.documentTypeTable', 4)),
       'documentNumber' => $this->faker->numberBetween(1000000, 1199999999),
       'verificationDigit' => $this->faker->numberBetween(0, 9),
       'billingEmail' => $this->faker->safeEmail,

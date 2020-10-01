@@ -24,7 +24,7 @@ class UserCategoryFactory extends Factory
   {
     return [
       'name' => $this->faker->paragraph(2),
-      'price_list_id' => $this->faker->numberBetween(1, config('app.seedPriceListTable'), 4),
+      'price_list_id' => $this->faker->numberBetween(1, config('seed.priceListTable'), 4),
       'active' => true
     ];
   }

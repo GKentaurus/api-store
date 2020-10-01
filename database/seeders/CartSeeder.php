@@ -17,6 +17,6 @@ class CartSeeder extends Seeder
     /**
      * Setup the cart factory on config\app.php
      */
-    Cart::factory()->times(config('seeder.seedCartTable'), 4)->create();
+    Cart::factory()->times(config('seeder.cartTable'), 4)->create();
   }
 }

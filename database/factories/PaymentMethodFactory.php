@@ -23,7 +23,7 @@ class PaymentMethodFactory extends Factory
   public function definition()
   {
     return [
-      'sortOrder' => $this->faker->numberBetween(8, config('app.seedPaymentMethodTable', 7)),
+      'sortOrder' => $this->faker->numberBetween(8, config('seeder.paymentMethodTable', 7)),
       'name' => $this->faker->paragraph(2),
       'active' => 1,
     ];

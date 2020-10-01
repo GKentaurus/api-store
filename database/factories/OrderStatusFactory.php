@@ -23,7 +23,7 @@ class OrderStatusFactory extends Factory
   public function definition()
   {
     return [
-      'sortOrder' => $this->faker->numberBetween(8, config('app.seedOrderStatusTable', 7)),
+      'sortOrder' => $this->faker->numberBetween(8, config('seeder.orderStatusTable', 7)),
       'name' => $this->faker->paragraph(2),
       'active' => 1,
     ];

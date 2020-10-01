@@ -44,7 +44,7 @@ class PaymentMethodSeeder extends Seeder
     /**
      * Setup the payment method factory on config\app.php
      */
-    $qty = config('seeder.seedPaymentMethodTable', 7) - count($paymentMethods);
+    $qty = config('seeder.paymentMethodTable', 7) - count($paymentMethods);
     $qty = $qty <= 0 ?  0 : $qty;
     if ($qty > 0) {
       PaymentMethod::factory()->times($qty)->create();

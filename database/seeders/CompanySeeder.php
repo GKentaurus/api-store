@@ -17,6 +17,6 @@ class CompanySeeder extends Seeder
     /**
      * Setup the company factory on config\app.php
      */
-    Company::factory()->times(config('seeder.seedCompanyTable'))->create();
+    Company::factory()->times(config('seeder.companyTable'))->create();
   }
 }

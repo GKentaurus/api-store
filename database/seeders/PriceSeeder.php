@@ -15,8 +15,8 @@ class PriceSeeder extends Seeder
   public function run()
   {
 
-    for ($i = 1; $i <= config('aap.seedPriceListTable', 4); $i++) { //  Cantidad de listas
-      for ($j = 1; $j <= config('aap.seedProductTable', 5); $j++) { //  Cantidad de productos
+    for ($i = 1; $i <= config('seeder.seedPriceListTable', 4); $i++) { //  Cantidad de listas
+      for ($j = 1; $j <= config('seeder.seedProductTable', 5); $j++) { //  Cantidad de productos
         Price::factory()->create([
           'product_id' => $j,
           'price_list_id' => $i,

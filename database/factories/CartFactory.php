@@ -23,7 +23,7 @@ class CartFactory extends Factory
   public function definition()
   {
     return [
-      'user_id' => $this->faker->numberBetween(1, config('app.seedUserTable', 4)),
+      'user_id' => $this->faker->numberBetween(1, config('seeder.userTable', 4)),
     ];
   }
 }

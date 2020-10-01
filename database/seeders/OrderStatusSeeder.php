@@ -59,7 +59,7 @@ class OrderStatusSeeder extends Seeder
      * Setup the order status factory on config\app.php
      */
 
-    $qty = config('seeder.seedOrderStatusTable', 7) - count($orderStatus);
+    $qty = config('seeder.orderStatusTable', 7) - count($orderStatus);
     $qty = $qty <= 0 ?  0 : $qty;
     if ($qty > 0) {
       OrderStatus::factory()->times($qty)->create();

@@ -31,7 +31,7 @@ class DocumentTypeSeeder extends Seeder
     /**
      * Setup the document type factory on config\app.php
      */
-    $qty = config('seeder.seedDocumentTypeTable', 4) - count($abbreviation);
+    $qty = config('seeder.documentTypeTable', 4) - count($abbreviation);
     $qty = $qty <= 0 ?  0 : $qty;
     DocumentType::factory()->times($qty)->create();
   }

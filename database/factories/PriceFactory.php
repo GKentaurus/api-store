@@ -23,8 +23,8 @@ class PriceFactory extends Factory
   public function definition()
   {
     return [
-      'product_id' => $this->faker->numberBetween(1, config('app.seedProductTable'), 5),
-      'price_list_id' => $this->faker->numberBetween(1, config('app.seedPriceListTable'), 4),
+      'product_id' => $this->faker->numberBetween(1, config('seeder.productTable'), 5),
+      'price_list_id' => $this->faker->numberBetween(1, config('seeder.priceListTable'), 4),
       'price' => $this->faker->numberBetween(100, 500),
     ];
   }
