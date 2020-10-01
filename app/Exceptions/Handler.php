@@ -3,9 +3,15 @@
 namespace App\Exceptions;
 
 use App\Traits\ApiResponser;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Auth\AuthenticationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class Handler extends ExceptionHandler
 {
@@ -39,11 +45,26 @@ class Handler extends ExceptionHandler
     if (config('app.debug')) {
 
       $this->renderable(function (QueryException $e, $request) {
-        $code = $e->errorInfo[1];
-        // if ($code == 1062) {
-        //
-        // }
         return $this->errorResponse($e->errorInfo[2], 500);
+      });
+      $this->renderable(function (ModelNotFoundException $e) {
+        $model = strtolower(class_basename($e->getModel()));
+        return $this->errorResponse('No query result for ' . $model . 'model', 404);
+      });
+      $this->renderable(function (AuthenticationException $e) {
+        return $this->errorResponse($e, 000);
+      });
+      $this->renderable(function (AuthorizationException $e) {
+        return $this->errorResponse($e, 000);
+      });
+      $this->renderable(function (MethodNotAllowedHttpException $e) {
+        return $this->errorResponse($e, 000);
+      });
+      $this->renderable(function (AuthenticationException $e) {
+        return $this->errorResponse($e, 000);
+      });
+      $this->renderable(function (HttpException $e) {
+        return $this->errorResponse($e->getMessage(), $e->getStatusCode());
       });
     }
   }
